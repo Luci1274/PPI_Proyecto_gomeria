@@ -53,6 +53,6 @@ o que sencillamente trabaje con tablas
 14. Calcular ganancia
 15. Filtrar ganancia (dia, semana, mes)
 16. Descontar stock vendido del disponible
-17. aviso de prodcuto en falta
+17. aviso de producto en falta
 
 
