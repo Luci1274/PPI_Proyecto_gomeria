@@ -37,22 +37,37 @@ o que sencillamente trabaje con tablas
 
 ## Unificado:
 
-1. Organizar entrada y salida de dinero(diario, semanal y mensual)
-2. Organizar gastos de insumo
-3. Calcular salida de cada producto
-4. Utilizar tabla para administracion de insumos
-5. Mostrar tabla con precios de stock del proveedor
-6. Tener un control de stock semanal
-7. Emitir facturas tipo(A y B)
-8. Mostrar formas de pago(efectivo, tranferencia)
-9. Registrar productos e insumos con descripción (nombre, precio, cantidad en stock)
-10. Modificar precio y cantidad de productos e insumos
-11. Mostrar listado de productos
-12. Filtrar productos con (nombre y cantidad)
-13. Cambiar porcentaje de precio dependiendo de la venta 
-14. Calcular ganancia
-15. Filtrar ganancia (dia, semana, mes)
-16. Descontar stock vendido del disponible
-17. aviso de producto en falta
+1. Registrar entrada y salida de dinero
 
+2. Organizar entrada y salida de dinero(diario, semanal y mensual)
+
+3. Organizar gastos de insumo
+
+4. Calcular salida de cada producto
+
+5. Utilizar tabla para administracion de insumos
+
+6. Mostrar tabla con precios de stock del proveedor
+
+7. Tener un control de stock semanal
+
+8. Emitir facturas
+
+9. Mostrar formas de pago
+
+10. Registrar productos e insumos con descripción (nombre, precio, tipo, marca, cantidad en stock)
+
+11. El sistema debe permitir precio y cantidad de productos e insumos
+
+12. El sistema debe mostrar listado de productos e insumos
+
+13. Filtrar productos con (nombre, cantidad, tipo, marca)
+
+14. El sistema debe variar el precio dependiendo de la demanda 
+
+15. El sistema debe calcular ganancia (diaria, semanal y mensual)
+
+16. El sistema debe descontar stock vendido del disponible
+
+17. El sistema debe dar aviso de prodcuto en falta
 
