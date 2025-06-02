@@ -8,28 +8,31 @@ forma de pago = [Efectivo | Tarjeta | Transferencia]
 
 factura = [A | B]
 
-item_venta = @Id_producto + nombre_producto + precio_unitario + 1{cantidad}n
+item_venta = nombre_producto + precio_unitario + cantidad
 
 ## Compra
 
-compra = proveedor + 1{item_compra}n + forma_de_pago + fecha + hora+ iva + cantidad_total_comprada + precio_total
+compra = proveedor + 1{item_compra}n + forma_de_pago + fecha + hora + iva + cantidad_total_comprada + precio_total
 
 forma de pago = [Efectivo | Tarjeta | Transferencia]
 
-item_compra = @Id_producto + nombre_producto + precio_unitario + 1{cantidad}n
+item_compra = nombre_producto + precio_unitario + cantidad
 
-## Productos
+## Producto
 
-productos = @Id_producto + nombre + tipo + marca + precio_unitario + 0{cantidad}n
+producto = nombre + tipo + marca + precio_unitario + cantidad
 
-stock = 1{producto}n + precio_unitario + 0{cantidad}n + + porcentaje_venta
+stock = 1{producto}n + precio_unitario + cantidad + porcentaje_venta
 
 ## Proveedor
 
-proveedor = nombre + apellido + direccion + telefono_movil + mail + dni
+proveedor = direccion + telefono_movil + mail + CUIT
 
 ## Tabla dato elemental
 
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
-| Id_producto | Numero identificador de cada producto | INT | ..... | Continua |
+| CUIT|Es un codigo identificador de empresas|INT|11|Continua|
+| Nombre_producto|Nombre que recibe un producto|STR|...|[]|
+| Tipo|Tipo de producto|STR|..|[]|
+| Marca|Marca del producto|STR|...|[]|
