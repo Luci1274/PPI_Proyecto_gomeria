@@ -33,6 +33,8 @@ proveedor = direccion + telefono_movil + mail + CUIT
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
 | CUIT|Es un codigo identificador de empresas|INT|11|Continua|
-| Nombre_producto|Nombre que recibe un producto|STR|...|[]|
-| Tipo|Tipo de producto|STR|..|[]|
-| Marca|Marca del producto|STR|...|[]|
+| Nombre_producto|Nombre que recibe un producto|STR|...|Discreto|
+| Tipo|Tipo de producto|STR|..|Discreto|
+| Marca|Marca del producto|STR|...|Disccreto|
+| Precio| Precio del producto|Float|...|Continua|
+| Stock| Cantidad de productos|INT|...|Continua|
