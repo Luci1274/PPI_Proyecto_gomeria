@@ -36,5 +36,5 @@ proveedor = direccion + telefono_movil + mail + CUIT
 | Nombre_producto|Nombre que recibe un producto|STR|...|Discreto|
 | Tipo|Tipo de producto|STR|..|Discreto|
 | Marca|Marca del producto|STR|...|Disccreto|
-| Precio| Precio del producto|Float|...|Continua|
+| Precio| Precio del producto|FLOAT|...|Continua|
 | Stock| Cantidad de productos|INT|...|Continua|
