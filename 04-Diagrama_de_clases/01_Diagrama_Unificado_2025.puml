@@ -3,6 +3,7 @@
     class Transaccion {
         - numero: Int
         - fecha: Date
+        - forma_de_pago: str
 
         + procesar(): Void 
         + movimiento_stock(): Void
@@ -14,7 +15,6 @@
 
         + registrar_compra(): Void 
         + modificar_compra(): Void
-        
     }
 
     class Venta {
@@ -23,13 +23,21 @@
         + registrar_venta(): Void 
         + modificar_venta(): Void
         + calcular_ganancia(): Void 
+        + emitir_factura(): Void
     }
 
     class Item {
-        producto: List<<Producto>>
-        cantidad: Int
-        precio: Float
-        descuento: Float
+        - producto: List<<Producto>>
+        - cantidad: Int
+        - precio: Float
+        - descuento: Float
+        - nombre: str
+        - tipo : str
+        - marca: str
+
+        + registrar_item():
+        + modificar_item():
+        + eliminar_item():
     }
 
     class Persona {
@@ -74,12 +82,12 @@
 
     Transaccion "1..*" <|-- "1..*" Venta
     Transaccion "1..*" <|-- "1..*" Compra
+
     Compra "1" -- "1..*" Item
     Venta "1" -- "1..*" Item
 
-
-    ' Compra "1" -- "1..*" Proveedor
-    ' Venta "1" -- "1..*" Cliente
+    Compra "1" -- "1..*" Proveedor
+    Venta "1" -- "1..*" Cliente
 
     Item "1" -- "1" Producto
 
