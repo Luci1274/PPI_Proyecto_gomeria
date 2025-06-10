@@ -1,0 +1,88 @@
+@startuml Gomeria
+
+class Persona {
+    - Nombre: String
+    - Apellido: String
+    - Dni: Int
+    - Direccion: String
+    }
+
+class Proveedor {
+    - Lista_precios: Map<String, Float>
+    ̣+ Mostrar_precios(): Void  
+    }
+
+class Cliente {
+    }    
+
+class Producto {
+    - Nombre: String 
+    - Precio: Float 
+    - Tipo: String 
+    - Marca: String 
+    - Cantidad: Int 
+    - Proveedor: List<Proveedor>
+        
+    + Registrar_producto(): Void 
+    + Modificar_producto(): Void 
+    + Eliminar_producto(): Void
+    + Calcular_precio(): Void
+    + Filtrar_productos(): Void
+    }
+
+class Item {
+    - Producto: List<<Producto>>
+    - Cantidad: Int
+    - Precio: Float
+    - Descuento: Float
+    - Nombre: String
+    - Tipo : String
+    - Marca: String
+
+    + Registrar_item():Void
+    + Modificar_item(): Void
+    + Eliminar_item(): Void
+    }
+
+class Transaccion {
+    - Numero: Int
+    - Fecha: Date
+    - Forma_de_pago: String
+
+    + Procesar(): Void 
+    + Movimiento_stock(): Void
+    + Calcular_total(): Void 
+    }
+
+class Compra {
+    - Proveedor: List<<Proveedor>>
+
+    + Registrar_compra(): Void 
+    + Modificar_compra(): Void
+    + Filtrar_compra(): Void
+    }
+
+class Venta {
+    - Cliente: List<<Cliente>>
+
+    + Registrar_venta(): Void 
+    + Modificar_venta(): Void
+    + Filtrar_venta(): Void
+    + Calcular_ganancia(): Void 
+    + Emitir_factura(): Void
+    }
+
+
+Persona <|-- Cliente
+Persona <|-- Proveedor
+
+Transaccion <|-- Venta
+Transaccion <|-- Compra
+
+Venta "1..*" --> "1" Cliente
+Compra "1..*" --> "1" Proveedor
+
+Venta "1" --> "1..*" Item
+Compra "1" --> "1..*" Item
+
+Item "1" --> "1" Producto
