@@ -26,7 +26,7 @@ stock = 1{producto}n + precio_unitario + cantidad + porcentaje_venta + historial
 
 historial_precio = nombre_producto + precio_unitario + fecha_inicio_vigencia + fecha_fin_vigencia
 
-hisotorial_movimiento = [ingreso y egreso]
+historial_movimiento = [ingreso y egreso]
 
 ## Proveedor
 
