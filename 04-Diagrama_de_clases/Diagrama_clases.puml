@@ -9,7 +9,7 @@ class Persona {
 
 class Proveedor {
     - Lista_precios: Map<String, Float>
-    ̣+ Mostrar_precios(): Void  
+    ̣+ Visualizar_precios(): Void
     }
 
 class Cliente {
