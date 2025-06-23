@@ -2,7 +2,7 @@
 
 ## Venta
 
-venta = fecha + hora + 1{item_venta}n +  forma de pago + descuento + factura + iva + cantidad total de productos vendidos + precio_total.
+venta = fecha + hora + 1{item_venta}n + forma de pago + descuento + factura + iva + cantidad total de productos vendidos + precio_total.
 
 forma de pago = [Efectivo | Tarjeta | Transferencia]
 
@@ -26,7 +26,7 @@ stock = 1{producto}n + precio_unitario + cantidad + porcentaje_venta + historial
 
 historial_precio = nombre_producto + precio_unitario + fecha_inicio_vigencia + fecha_fin_vigencia
 
-hisotorial_movimiento = [ingreso y egreso]
+historial_movimiento = [ingreso y egreso]
 
 ## Proveedor
 
@@ -37,9 +37,9 @@ proveedor = direccion + telefono_movil + mail + CUIT
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
 | CUIT|Es un codigo identificador de empresas|INT|11|Continuo|
-| Nombre_producto|Nombre que recibe un producto|STR|...|Discreto|
-| Tipo|Tipo de producto|STR|..|Discreto|
-| Marca|Marca del producto|STR|...|Discreto|
-| Precio unitario| Precio unitario del producto|FLOAT|...|Continuo|
-| Precio total| Precio total de la compra y/o venta|FLOAT|...|Continuo|
-| Stock| Cantidad de productos|INT|...|Continuo|
+| Nombre_producto|Nombre que recibe un producto|STR|30|Discreto|
+| Tipo|Tipo de producto|STR|25|Discreto|
+| Marca|Marca del producto|STR|25|Discreto|
+| Precio unitario| Precio unitario del producto|FLOAT|10|Continuo|
+| Precio total| Precio total de la compra y/o venta|FLOAT|10|Continuo|
+| Stock| Cantidad de productos|INT|100|Continuo|
