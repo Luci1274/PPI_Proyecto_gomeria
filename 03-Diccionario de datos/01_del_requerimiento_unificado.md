@@ -28,11 +28,25 @@ historial_precio = nombre_producto + precio_unitario + fecha_inicio_vigencia + f
 
 historial_movimiento = [ingreso y egreso]
 
+## Cliente con antigüedad
+
+cliente = nombre + apellido + plazo de pago + deuda + historial de pago + historial de compra + forma de contacto
+
+forma de contacto = [Telefono | Email | Whatsapp]
+
+historial de compras = 1{compra}n + fecha + hora + cantidad + precio_total
+
+historial de pago = 1{pago}n + fecha + hora + monto + forma de pago
+
+forma de pago = [Efectivo | Tarjeta | Transferencia]
+
 ## Proveedor
 
-proveedor = direccion + telefono_movil + mail + CUIT
+proveedor = direccion + forma de contacto + CUIT
 
-## Tabla dato elemental
+forma de contacto = [Telefono | Email | Whatsapp]
+
+## Tabla dato elemental producto
 
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
@@ -43,3 +57,22 @@ proveedor = direccion + telefono_movil + mail + CUIT
 | Precio unitario| Precio unitario del producto|FLOAT|10|Continuo|
 | Precio total| Precio total de la compra y/o venta|FLOAT|10|Continuo|
 | Stock| Cantidad de productos|INT|100|Continuo|
+
+## Tabla dato elemental cliente
+
+| Nombre | Descripción | Tipo de dato | Longitud | Dominio |
+|:-------|:------------|:-------------|:---------|:--------|
+| Nombre | Nombre del cliente | STR | 15 | Discreto |
+| Apellido | Apellido del cliente | STR | 15 | Discreto |
+| Plazo de pago | Plazo de pago del cliente | INT | 8 | Discreto |
+| Deuda | Deuda del cliente | FLOAT | 15 | Continuo |
+| Historial de pago | Historial de pago del cliente | STR | 100 | Discreto |
+| Historial de compra | Historial de compra del cliente | STR | 100 | Discreto |
+| Forma de contacto | Forma de contacto del cliente | STR | 20 | Discreto |
+
+## Tabla dato elemental proveedor
+
+| Nombre | Descripción | Tipo de dato | Longitud | Dominio |
+|:-------|:------------|:-------------|:---------|:--------|
+| CUIT | Código único de identificación tributaria | INT | 11 | Continuo |
+| Forma de contacto | Forma de contacto del cliente | STR | 20 | Discreto |
