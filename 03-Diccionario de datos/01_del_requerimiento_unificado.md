@@ -28,6 +28,10 @@ historial_precio = nombre_producto + precio_unitario + fecha_inicio_vigencia + f
 
 historial_movimiento = [ingreso y egreso]
 
+ingreso = [compra de producto]
+
+egreso = [venta de producto]
+
 ## Cliente con antigüedad
 
 cliente = nombre + apellido + plazo de pago + deuda + historial de pago + historial de compra + forma de contacto
@@ -64,7 +68,7 @@ forma de contacto = [Telefono | Email | Whatsapp]
 |:-------|:------------|:-------------|:---------|:--------|
 | Nombre | Nombre del cliente | STR | 15 | Discreto |
 | Apellido | Apellido del cliente | STR | 15 | Discreto |
-| Plazo de pago | Plazo de pago del cliente | INT | 8 | Discreto |
+| Plazo de pago | plazo de 30 dias para pagar | INT | 2 | Discreto |
 | Deuda | Deuda del cliente | FLOAT | 15 | Continuo |
 | Historial de pago | Historial de pago del cliente | STR | 100 | Discreto |
 | Historial de compra | Historial de compra del cliente | STR | 100 | Discreto |
