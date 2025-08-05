@@ -2,7 +2,7 @@
 Clasificación de la regla de negocio:
 1. Hechos:
 * El cliente siempre es atendido por el dueño.
-* Solo permite a los clientes más viejos tener una cuenta para anotar.
+* Solo permite a los clientes más antiguos tener una cuenta corriente.
 * Acepta cheques en las cuentas de clientes puntuales.
 
 
@@ -22,4 +22,4 @@ Clasificación de la regla de negocio:
 
 5. Inferencias:
 * Al finalizar un trabajo recibe el pago acordado.
-* Si el pago no se recibe luego de 4 meses, se realiza un aumento de la deuda correspondiente y se corta la cuenta.
+* Si el pago no se recibe luego de 4 meses, se realiza un aumento de la deuda correspondiente y se da de baja la cuenta corriente.
