@@ -1,5 +1,5 @@
 # Caso de uso: Venta
-# Actores: adminitrador
+# Actores: usuario (vendedor)
 # Precondiciones: ... 
 # Caminos Basico:
 1. El usuario ingresa al sistema.
