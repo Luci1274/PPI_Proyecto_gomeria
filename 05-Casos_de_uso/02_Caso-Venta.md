@@ -19,11 +19,21 @@
 15. El usuario puede imprimir el ticket de la venta o ver el historial de ventas.
 
 # Caminos Alternativos:
-7_1. Si el usuario decide cancelar la adición de un item, puede hacer click en "Cancelar" y volver al formulario de venta sin agregar el item.
+7. Si el usuario decide cancelar la adición de un item 
+    
+    7.1. Puede hacer click en "Cancelar" y volver al formulario de venta sin agregar el item.
+    
+    7.2. El sistema muestra la pantalla de venta
 
-8_1. Si el usuario ingresa un item con un nombre de producto que no existe, el sistema muestra un mensaje de error y no agrega el item a la venta.
+8. Si el usuario ingresa un item con un nombre de producto que no existe  
 
-10_1 Si el usuario decide cancelar la venta, puede hacer click en "Cancelar Venta" y volver al formulario de venta sin guardar nada.
+    8.1. El sistema muestra un mensaje de error y no agrega el item a la venta.
+
+10. Si el usuario decide cancelar la venta
+    
+    10.1. Puede hacer click en "Cancelar Venta"
+    
+    10.2. El sistema vuelve al formulario de venta sin guardar nada.
 
 # Postcondiciones: 
 El sistema guarda la venta en la base de datos y actualiza el inventario de productos.
