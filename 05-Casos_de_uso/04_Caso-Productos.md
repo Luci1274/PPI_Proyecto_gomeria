@@ -26,9 +26,9 @@ El producto no debe estar previamente registrado.
 16. El sistema actualiza la lista de productos
 
 # Caminos Alternativos:
-5a. Si el producto ya existe, el sistema notifica y ofrece la opción de actualizar stock.
-5b. Si faltan datos obligatorios, el sistema muestra un mensaje de error y solicita completar la información.
-5c. Si ocurre un error en la base de datos, el sistema informa que no fue posible registrar el producto.
+1. Si el producto ya existe, el sistema notifica y ofrece la opción de actualizar stock.
+2. Si faltan datos obligatorios, el sistema muestra un mensaje de error y solicita completar la información.
+3. Si ocurre un error en la base de datos, el sistema informa que no fue posible registrar el producto.
 
 # Postcondiciones: 
 El producto queda registrado en el sistema con todos sus datos.
