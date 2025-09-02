@@ -36,5 +36,5 @@ El producto queda registrado en el sistema con todos sus datos.
 # Escenarios de Exito: 
 El producto se registra correctamente y está disponible para ser gestionado (consultado, vendido o modificado).
 
-# Escenarios de Exito: 
+# Escenarios de Fracaso: 
 El producto no se registra porque ya existe, faltan datos o ocurre un error en el sistema.
