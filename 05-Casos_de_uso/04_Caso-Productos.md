@@ -8,7 +8,7 @@ El actor debe haber iniciado sesión en el sistema.
 El producto no debe estar previamente registrado.
 
 # Caminos Basico:
-1.El administrador selecciona la opcion "registrar producto"
+1. El administrador selecciona la opcion "registrar producto"
 2. El sistema muestra un formulario de registro
 3. El administrador completa los datos del producto(nombre, cantidad, precio)
 4. El administrador confirma la operaciom
