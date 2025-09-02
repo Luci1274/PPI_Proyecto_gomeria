@@ -29,4 +29,18 @@
 
 # Postcondiciones: Cliente antiguo registrado correctamente y guardado en la base de datos 
 # Escenarios de Exito:
+6.1 El administrador completa todos los datos obligatorios de un cliente antiguo y el sistema los valida y guarda correctamente.
+
+7.1 El administrador cancela el formulario de registro y el sistema vuelve a la pantalla anterior sin errores.
+
+10.1 El administrador accede al listado de clientes, visualiza correctamente la información y selecciona un cliente existente para modificarlo o eliminarlo, guardando los cambios exitosamente.
+
+12.1 El sistema confirma con un mensaje que los datos se guardaron correctamente.
 # Escenarios de Exito:
+6.2 El administrador ingresa datos inválidos (ejemplo: CUIT mal formado, email con formato incorrecto, teléfono incompleto) y el sistema rechaza la operación mostrando un mensaje de error.
+
+11.1 El administrador intenta modificar o eliminar un cliente, pero los datos no pasan la validación; el sistema informa el error y no aplica los cambios.
+
+12.1 Se produce un error de conexión con la base de datos al intentar guardar el cliente antiguo y el sistema muestra un mensaje de fallo, sin guardar nada.
+
+4.1 El administrador abandona el formulario sin guardar y se pierden los datos cargados (si no se implementa auto-guardado).
