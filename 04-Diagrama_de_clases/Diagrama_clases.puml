@@ -1,18 +1,33 @@
 @startuml Gomeria
-
 class Persona {
     - Nombre: String
-    - Apellido: String
-    - Dni: Int
+    - CUIT: Int
     - Direccion: String
+
+    + Registrar_persona(): Void
+    + Modificar_persona(): Void
+    + Eliminar_persona(): Void
+    + Filtrar_persona(): Void
     }
 
 class Proveedor {
     - Lista_precios: Map<String, Float>
-    ̣+ Visualizar_precios(): Void
+    
+    + Registrar_proveedor(): Void 
+    + Modificar_proveedor(): Void 
+    + Eliminar_proveedor(): Void
+    + Visualizar_precios(): Void
     }
 
-class Cliente {
+class Cliente_antiguo{
+
+    + Registrar_cliente(): Void
+    + Modificar_cliente(): Void
+    + Eliminar_cliente(): Void
+    + Filtrar_cliente(): Void
+    + Realizar_pago(): Void
+    + Devolver_producto(): Void
+
     }    
 
 class Producto {
@@ -73,13 +88,13 @@ class Venta {
     }
 
 
-Persona <|-- Cliente
+Persona <|-- Cliente_antiguo
 Persona <|-- Proveedor
 
 Transaccion <|-- Venta
 Transaccion <|-- Compra
 
-Venta "1..*" --> "1" Cliente
+Venta "1..*" --> "1" Cliente_antiguo
 Compra "1..*" --> "1" Proveedor
 
 Venta "1" --> "1..*" Item
