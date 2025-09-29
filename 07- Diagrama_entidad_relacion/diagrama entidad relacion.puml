@@ -9,7 +9,7 @@ entity proveedores {
 }
 
 entity cuentas_corrientes {
-  id: INT <<>key>>
+  id: INT <<key>>
   nombre: VARCHAR
   DNI: INT 
   telefono: INT
@@ -35,7 +35,18 @@ monto: float
 forma_de_pago: VARCHAR
 }
 
-entity historial_compras{
+
+relationship historial_ventas{
+id: Int <<key>>
+fk_id_proveedore: Int
+compra: float
+fecha: date
+hora: time
+cantidad: Int
+precio_total: Int
+}
+
+relationship historial_compras{
 id: Int <<key>>
 fk_id_cuenta_corriente: Int
 compra: float
@@ -45,13 +56,13 @@ cantidad: Int
 precio_total: Int
 }
 
-entity historial_ventas{
-id: Int <<key>>
-fk_id_proveedore: Int
-compra: float
-fecha: date
-hora: time
-cantidad: Int
-precio_total: Int
-}
+proveedores -N- historial_compras
+historial_compras -N- productos
+
+cuentas_corrientes -N- historial_ventas
+historial_ventas -N- productos
+
+historial_ventas -N- historial_pagos
+
+
 @endchen
