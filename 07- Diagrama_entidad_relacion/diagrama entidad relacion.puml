@@ -1,0 +1,57 @@
+@startchen
+
+entity proveedores {
+  id: INT <<key>>
+  nombre: VARCHAR
+  CUIT: INT
+  telefono: INT
+  correo electronico: VARCHAR
+}
+
+entity cuentas_corrientes {
+  id: INT <<>key>>
+  nombre: VARCHAR
+  DNI: INT 
+  telefono: INT
+  correo electronico: VARCHAR
+}
+
+entity productos {
+  id: INT <<key>>
+  nombre: VARCHAR
+  precio: FLOAT
+  tipo: VARCHAR
+  codigo: INT 
+  descripcion: VARCHAR
+}
+
+entity historial_pagos{
+id: Int <<key>>
+fk_id_cuenta_corriente: Int
+pago: float
+fecha: date
+hora: time
+monto: float
+forma_de_pago: VARCHAR
+}
+
+entity historial_compras{
+id: Int <<key>>
+fk_id_cuenta_corriente: Int
+compra: float
+fecha: date
+hora: time
+cantidad: Int
+precio_total: Int
+}
+
+entity historial_ventas{
+id: Int <<key>>
+fk_id_proveedore: Int
+compra: float
+fecha: date
+hora: time
+cantidad: Int
+precio_total: Int
+}
+@endchen
