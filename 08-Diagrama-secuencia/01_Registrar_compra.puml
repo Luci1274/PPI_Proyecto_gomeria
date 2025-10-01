@@ -13,6 +13,6 @@ Sistema -> DB: Guardar cambios
 DB --> Sistema: Mostrar confirmación
 Sistema --> Administrador: Mostrar confirmación
 Administrador -> Sistema: Seleccionar item de compra
-
+Sistema
 
 @enduml
