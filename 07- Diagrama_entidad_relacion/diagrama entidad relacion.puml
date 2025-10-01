@@ -23,46 +23,19 @@ entity productos {
   tipo: VARCHAR
   codigo: INT 
   descripcion: VARCHAR
+  cantidad: INT
 }
 
-entity historial_pagos{
-id: Int <<key>>
-fk_id_cuenta_corriente: Int
-pago: float
-fecha: date
-hora: time
-monto: float
-forma_de_pago: VARCHAR
+relationship compra{
 }
 
-
-relationship historial_ventas{
-id: Int <<key>>
-fk_id_proveedore: Int
-compra: float
-fecha: date
-hora: time
-cantidad: Int
-precio_total: Int
+relationship venta{
 }
 
-relationship historial_compras{
-id: Int <<key>>
-fk_id_cuenta_corriente: Int
-compra: float
-fecha: date
-hora: time
-cantidad: Int
-precio_total: Int
-}
+proveedores -1- compra
+compra -N- productos
 
-proveedores -N- historial_compras
-historial_compras -N- productos
-
-cuentas_corrientes -N- historial_ventas
-historial_ventas -N- productos
-
-historial_ventas -N- historial_pagos
-
+cuentas_corrientes -1- venta
+venta -N- productos
 
 @endchen
