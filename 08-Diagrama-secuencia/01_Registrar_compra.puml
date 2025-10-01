@@ -1,0 +1,18 @@
+@startuml Registrar compra
+
+Actor Administrador
+participant Sistema
+database Database as DB
+
+Administrador -> Sistema: Ingresar_proveedor()
+Sistema -> DB: Guardar cambios
+DB --> Sistema: devolver confirmación
+Sistema --> Administrador: mostrar confirmación
+Administrador -> Sistema: Ingresar forma de pago
+Sistema -> DB: Guardar cambios
+DB --> Sistema: Mostrar confirmación
+Sistema --> Administrador: Mostrar confirmación
+Administrador -> Sistema: Seleccionar item de compra
+
+
+@enduml
