@@ -26,7 +26,7 @@ El producto no debe estar previamente registrado.
 16. El sistema actualiza la lista de productos
 
 # Caminos Alternativos:
-1. Si el producto ya existe, el sistema notifica y ofrece la opción de actualizar stock.
+1. Si el producto ya existe, el sistema notifica y ofrece la opción de registrar nuevo producto.
 2. Si faltan datos obligatorios, el sistema muestra un mensaje de error y solicita completar la información.
 3. Si ocurre un error en la base de datos, el sistema informa que no fue posible registrar el producto.
 
