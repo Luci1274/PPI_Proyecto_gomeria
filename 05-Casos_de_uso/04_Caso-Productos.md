@@ -20,7 +20,7 @@ El producto no debe estar previamente registrado.
 10. El administrador modifica los precios de los productos
 11. El sistema actualiza los precios
 12. El sistema muestra un mensaje de exito
-13. El administrador descuenta el producto vendido
+13. El sistema descuenta el producto vendido
 14. El sistema actualiza la cantidad de stock
 15. El administrador elimina los productos que no vende mas
 16. El sistema actualiza la lista de productos
