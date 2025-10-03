@@ -4,29 +4,36 @@ Actor Administrador
 participant Sistema
 database Database as DB
 
-Administrador -> Sistema: Ingresar proveedor
-Sistema -> DB: Guardar cambios
-DB --> Sistema: devolver confirmación
-Sistema --> Administrador: mostrar confirmación
-Administrador -> Sistema: Ingresar forma de pago
-Sistema -> DB: Guardar cambios
-DB --> Sistema: Devolver confirmación
-Sistema --> Administrador: Mostrar confirmación
+loop hasta datos correctos
+    Administrador -> Sistema: Ingresar datos proveedor
+    Sistema -> DB: Guardar cambios
+    DB --> Sistema: devolver confirmación
+    Sistema --> Administrador: mostrar confirmación
+    Administrador -> Sistema: Ingresar forma de pago
+    Sistema -> DB: Guardar cambios
+    DB --> Sistema: Devolver confirmación
+    Sistema --> Administrador: Mostrar confirmación
+end
 Administrador -> Sistema: Seleccionar item de compra
 Sistema --> Administrador: Mostrar item de compra
-Administrador -> Sistema: Llenar campos
-Sistema -> DB: Actualizar stock
-DB --> Sistema: Devolver confirmacion
-Sistema --> Administrador: Mostrar confirmacion
+loop hasta campos aceptados
+    Administrador -> Sistema: Llenar campos
+    Sistema -> DB: Actualizar stock
+    DB --> Sistema: Devolver confirmacion
+    Sistema --> Administrador: Mostrar confirmacion
+end
 Administrador -> Sistema: Seleccionar listado de compras
 Sistema --> Administrador: Mostrar listado de compras
-Administrador -> Sistema: Ingresar datos a cambiar
-Sistema -> DB: Validar cambios
-DB --> Sistema: Devolver confirmacion
-Sistema --> Administrador: Mostrar mensaje de confirmacion
-Administrador -> Sistema: Filtrar listado de compra
-Sistema -> DB: Pedir listado
-DB --> Sistema: Devolver listado
-Sistema --> Administrador: Mostrar listado filtrado
-
+loop hasta datos validos
+    Administrador -> Sistema: Ingresar datos a cambiar
+    Sistema -> DB: Validar cambios
+    DB --> Sistema: Devolver confirmacion
+    Sistema --> Administrador: Mostrar mensaje de confirmacion
+end
+loop hasta datos de filtrado validos
+    Administrador -> Sistema: Filtrar listado de compra
+    Sistema -> DB: Pedir listado
+    DB --> Sistema: Devolver listado
+    Sistema --> Administrador: Mostrar listado filtrado
+end
 @enduml
