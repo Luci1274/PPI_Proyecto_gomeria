@@ -1,0 +1,62 @@
+@startuml Productos
+
+    actor Administrador
+    participant Sistema
+    database "Base de Datos" as DB
+
+    Administrador -> Sistema: Registrar Producto
+
+    alt producto existe 
+            Sistema -> Administrador: notifica y ofrece actualizar stock
+        else producto no existe
+            Sistema -> Administrador: notifica y ofrece registrar nuevo producto
+    end
+
+    Sistema -> Administrador: Mostrar Formulario de registro
+
+    loop hasta completar datos
+        Sistema -> Administrador: Mostrar mensaje de error y solicitar completar datos
+    end
+
+    Administrador -> Sistema: Ingresar datos del producto
+    Sistema -> DB: Almacenar datos del producto
+
+    alt error en almacenamiento
+        DB --> Sistema: aviso de error
+        Sistema --> Administrador: Mostrar mensaje de error
+    end
+
+    DB --> Sistema: Confirmacion de almacenamiento
+    Sistema --> Administrador: Mostrar mensaje de confirmacion
+    administrador -> Sistema: Solicitar lista de productos
+    Sistema -> Administrador: Mostrar lista de productos en stock y faltantes
+    Administrador -> Sistema: modificar precio del producto
+
+    opt Producto fuera de venta
+        Administrador -> Sistema: Marcar producto como fuera de venta
+        Sistema -> DB: Actualizar estado del producto
+        DB --> Sistema: Confirmacion de actualizacion
+        Sistema --> Administrador: Mostrar mensaje de confirmacion
+    end
+
+    sistema -> DB: actualizar precio del producto
+    DB --> sistema: confirmacion de actualizacion
+    sistema --> Administrador: mostrar mensaje de confirmacion
+    Sistema -> DB: Actualizar stock de productos
+    DB --> Sistema: Confirmacion de actualizacion
+    Sistema --> Administrador: Mostrar mensaje de confirmacion
+
+   
+
+    
+    
+
+
+
+
+
+
+
+
+
+@enduml
