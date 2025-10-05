@@ -1,39 +1,121 @@
-@startuml Registrar compra
+@startuml
+' Diagrama de secuencia: Registrar Compra
+' Actores: Administrador
+' Archivo: diagrama_secuencia_registrar_compra.puml
 
-Actor Administrador
-participant Sistema
-database Database as DB
+actor Administrador as Admin
+participant "Interfaz (UI)" as UI
+participant "Servicio de Compras" as CompraSvc
+participant "Servicio de Inventario" as InvSvc
+database "Base de Datos" as DB
 
-loop hasta datos correctos
-    Administrador -> Sistema: Ingresar datos proveedor
-    Sistema -> DB: Guardar cambios
-    DB --> Sistema: devolver confirmación
-    Sistema --> Administrador: mostrar confirmación
-    Administrador -> Sistema: Ingresar forma de pago
-    Sistema -> DB: Guardar cambios
-    DB --> Sistema: Devolver confirmación
-    Sistema --> Administrador: Mostrar confirmación
+== Inicio: Ingresar proveedor ==
+Admin -> UI: Ingresar datos del proveedor
+UI -> CompraSvc: validarProveedor(datosProveedor)
+alt proveedor inválido
+    CompraSvc -> UI: devolverError("Proveedor inválido")
+    UI --> Admin: mostrarError
+    return
+else proveedor válido
+    CompraSvc -> DB: guardarProveedor(datosProveedor)
+    DB --> CompraSvc: OK
+    CompraSvc -> UI: confirmarProveedorGuardado
 end
-Administrador -> Sistema: Seleccionar item de compra
-Sistema --> Administrador: Mostrar item de compra
-loop hasta campos aceptados
-    Administrador -> Sistema: Llenar campos
-    Sistema -> DB: Actualizar stock
-    DB --> Sistema: Devolver confirmacion
-    Sistema --> Administrador: Mostrar confirmacion
+
+== Ingresar forma de pago ==
+Admin -> UI: Ingresar forma de pago
+UI -> CompraSvc: validarPago(datosPago)
+alt forma de pago inválida
+    CompraSvc -> UI: devolverError("Forma de pago inválida")
+    UI --> Admin: mostrarError
+    return
+else forma de pago válida
+    CompraSvc -> DB: guardarFormaPago(datosPago)
+    DB --> CompraSvc: OK
+    CompraSvc -> UI: confirmarPagoGuardado
 end
-Administrador -> Sistema: Seleccionar listado de compras
-Sistema --> Administrador: Mostrar listado de compras
-loop hasta datos validos
-    Administrador -> Sistema: Ingresar datos a cambiar
-    Sistema -> DB: Validar cambios
-    DB --> Sistema: Devolver confirmacion
-    Sistema --> Administrador: Mostrar mensaje de confirmacion
+
+== Seleccionar item de compra y registrar productos ==
+Admin -> UI: Seleccionar item de compra
+UI -> CompraSvc: solicitarItem(itemId)
+CompraSvc -> DB: obtenerItem(itemId)
+DB --> CompraSvc: item
+CompraSvc -> UI: mostrarItem(item)
+
+Admin -> UI: Registrar producto, cantidad, precioUnitario
+UI -> CompraSvc: validarProductoEntrada(producto,cantidad,precio)
+alt datos producto inválidos
+    CompraSvc -> UI: devolverError("Datos del producto inválidos")
+    UI --> Admin: mostrarError
+    return
+else datos válidos
+    CompraSvc -> DB: guardarLineaCompra(producto,cantidad,precio)
+    DB --> CompraSvc: OK
+    CompraSvc -> UI: confirmarLineaGuardada
 end
-loop hasta datos de filtrado validos
-    Administrador -> Sistema: Filtrar listado de compra
-    Sistema -> DB: Pedir listado
-    DB --> Sistema: Devolver listado
-    Sistema --> Administrador: Mostrar listado filtrado
+
+== Guardar Compra completa ==
+Admin -> UI: Guardar compra
+UI -> CompraSvc: crearCompra(proveedor,pago,lineas)
+CompraSvc -> DB: guardarCompra(cabecera)
+DB --> CompraSvc: idCompra
+CompraSvc -> DB: guardarLineasCompra(idCompra,lineas)
+DB --> CompraSvc: OK
+
+' Actualizar stock y registro
+CompraSvc -> InvSvc: actualizarStock(lineas)
+alt error al actualizar stock
+    InvSvc -> CompraSvc: devolverError("Fallo actualización stock")
+    CompraSvc -> UI: mostrarError("No se pudo actualizar stock")
+    return
+else stock actualizado
+    InvSvc -> DB: guardarMovimientoStock(lineas)
+    DB --> InvSvc: OK
+    InvSvc --> CompraSvc: OK
 end
+
+CompraSvc -> UI: mostrarConfirmacionCompra(idCompra)
+
+== Listado y modificaciones ==
+Admin -> UI: Presionar Listado de compras
+UI -> CompraSvc: obtenerListadoCompras()
+CompraSvc -> DB: queryListadoCompras()
+DB --> CompraSvc: listado
+CompraSvc -> UI: mostrarListado(listado)
+
+Admin -> UI: Modificar compra (idCompra, nuevosDatos)
+UI -> CompraSvc: validarModificacion(nuevosDatos)
+alt datos de modificación inválidos
+    CompraSvc -> UI: devolverError("Datos de modificación inválidos")
+    UI --> Admin: mostrarError
+    return
+else válidos
+    CompraSvc -> DB: actualizarCompra(idCompra,nuevosDatos)
+    DB --> CompraSvc: OK
+    CompraSvc -> UI: confirmarActualizacion
+end
+
+alt validación correcta y cambios reflejados
+    CompraSvc -> DB: queryListadoCompras()
+    DB --> CompraSvc: listadoActualizado
+    CompraSvc -> UI: mostrarListado(listadoActualizado)
+end
+
+== Filtrado del listado ==
+Admin -> UI: Ingresar criterios de filtrado
+UI -> CompraSvc: validarFiltro(criterios)
+alt filtro inválido
+    CompraSvc -> UI: devolverError("Filtro inválido")
+    UI --> Admin: mostrarError
+    return
+else filtro válido
+    CompraSvc -> DB: queryFiltrado(criterios)
+    DB --> CompraSvc: resultados
+    CompraSvc -> UI: mostrarListado(resultados)
+end
+
+== Postcondición ==
+note over DB: Compra registrada
+note over InvSvc: Stock actualizado
+
 @enduml
