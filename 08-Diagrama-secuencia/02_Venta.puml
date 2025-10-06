@@ -1,0 +1,76 @@
+@startuml Venta
+title Diagrama de Secuencia - Venta
+
+
+actor Administrador as Admin
+participant Sistema as Sistema
+database Base_de_datos as BD
+
+
+== Inicio ==
+Admin -> Sistema: Ingresar pantalla de venta
+Sistema -> BD: Consultar ventas previas
+BD --> Sistema: Listado de ventas
+Sistema --> Admin: Mostrar listado
+
+
+== Registro de venta ==
+Admin -> Sistema: Seleccionar "Realizar venta"
+Sistema --> Admin: Mostrar formulario de venta
+Admin -> Sistema: Ingresar detalles de venta
+Sistema -> BD: Guardar datos de venta
+BD --> Sistema: Confirmación
+Sistema --> Admin: Mensaje de éxito
+
+
+== Items de venta ==
+Admin -> Sistema: Seleccionar "Agregar item"
+Sistema --> Admin: Visualizar información ítem
+Admin -> Sistema: Ingresar datos del ítem
+
+
+alt Producto existe
+   Sistema -> BD: Guardar item
+   BD --> Sistema: Confirmación
+   Sistema --> Admin: Mostrar total actualizado
+else Producto no existe
+   Sistema --> Admin: Mostrar mensaje de error
+end
+
+
+opt Usuario decide cancelar adición de ítem
+   Admin -> Sistema: Click en "Cancelar"
+   Sistema --> Admin: Volver al formulario de venta
+end
+
+
+== Modificar/Eliminar ==
+Admin -> Sistema: Modificar/Eliminar item
+Sistema -> BD: Actualizar datos
+BD --> Sistema: Confirmación
+Sistema --> Admin: Mensaje de éxito
+
+alt Usuario decide cancelar venta
+   Admin -> Sistema: Click en "Cancelar Venta"
+   Sistema --> Admin: Volver al formulario sin guardar
+else Confirmar venta
+   Admin -> Sistema: Confirmar venta
+   Sistema -> BD: Guardar venta definitiva
+   BD --> Sistema: Confirmación
+   Sistema --> Admin: Mensaje de éxito
+end
+
+
+== Opciones finales ==
+Admin -> Sistema: Solicitar impresión ticket
+Sistema -> BD: Obtener datos
+BD --> Sistema: Datos de venta
+Sistema --> Admin: Imprimir ticket
+
+
+@enduml
+
+
+
+
+
