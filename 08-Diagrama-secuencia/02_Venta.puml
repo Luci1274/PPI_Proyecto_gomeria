@@ -6,13 +6,11 @@ actor Administrador as Admin
 participant Sistema as Sistema
 database Base_de_datos as BD
 
-
 == Inicio ==
 Admin -> Sistema: Ingresar pantalla de venta
 Sistema -> BD: Consultar ventas previas
 BD --> Sistema: Listado de ventas
 Sistema --> Admin: Mostrar listado
-
 
 == Registro de venta ==
 Admin -> Sistema: Seleccionar "Realizar venta"
@@ -22,12 +20,10 @@ Sistema -> BD: Guardar datos de venta
 BD --> Sistema: Confirmación
 Sistema --> Admin: Mensaje de éxito
 
-
 == Items de venta ==
 Admin -> Sistema: Seleccionar "Agregar item"
 Sistema --> Admin: Visualizar información ítem
 Admin -> Sistema: Ingresar datos del ítem
-
 
 alt Producto existe
    Sistema -> BD: Guardar item
@@ -37,12 +33,10 @@ else Producto no existe
    Sistema --> Admin: Mostrar mensaje de error
 end
 
-
 opt Usuario decide cancelar adición de ítem
    Admin -> Sistema: Click en "Cancelar"
    Sistema --> Admin: Volver al formulario de venta
 end
-
 
 == Modificar/Eliminar ==
 Admin -> Sistema: Modificar/Eliminar item
@@ -59,7 +53,6 @@ else Confirmar venta
    BD --> Sistema: Confirmación
    Sistema --> Admin: Mensaje de éxito
 end
-
 
 == Opciones finales ==
 Admin -> Sistema: Solicitar impresión ticket

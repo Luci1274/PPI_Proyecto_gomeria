@@ -6,6 +6,7 @@ actor Administrador as Admin
 participant Sistema as System 
 database Base_de_datos as BD 
 
+==Inicio==
 Admin --> System: Ingresar pantalla de cliente antiguo 
 System --> BD: Consulta cliente antiguos 
 BD --> System: Resultado de consulta 
@@ -23,15 +24,25 @@ System --> Admin: Visualizar listado de clientes
 
 else Datos invalidos
 System --> Admin: Mensaje de error validación
+end 
 
-
-
-
+opt Administrador cancela formulario 
+Admin --> System: Selecciona "Cancelar"
+System --> Admin: Volver al listado de clientes 
+end 
 
 ==Modificar/Eliminar== 
 Admin --> System: Modificar/Eliminar item 
 System --> BD: Actualizar datos
 BD --> System: Confirmación 
+
+alt Datos válidos
 System --> Admin: Mensaje de éxito
+
+else Error al validar datos
+System --> Admin: Mensaje de error validación
+end 
+
+
 
 
