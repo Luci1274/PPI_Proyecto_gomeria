@@ -1,0 +1,37 @@
+@startuml Cliente antiguo 
+
+title Diagrama de secuencia - Cliente antiguo 
+
+actor Administrador as Admin 
+participant Sistema as System 
+database Base_de_datos as BD 
+
+Admin --> System: Ingresar pantalla de cliente antiguo 
+System --> BD: Consulta cliente antiguos 
+BD --> System: Resultado de consulta 
+System --> Admin: Visualizar listado de clientes
+
+==Registrar cliente nuevo==
+Admin --> System: Seleccionar "Registrar cliente antiguo" 
+System --> Admin: Mostrar formulario 
+Admin --> System: Ingresar datos [nombre, CUIT/CUIL, telefono, email]
+
+alt Datos válidos
+System --> BD: Guardar datos
+BD --> System: Confirmacion 
+System --> Admin: Visualizar listado de clientes
+
+else Datos invalidos
+System --> Admin: Mensaje de error validación
+
+
+
+
+
+==Modificar/Eliminar== 
+Admin --> System: Modificar/Eliminar item 
+System --> BD: Actualizar datos
+BD --> System: Confirmación 
+System --> Admin: Mensaje de éxito
+
+
