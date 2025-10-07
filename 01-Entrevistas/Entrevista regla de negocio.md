@@ -10,13 +10,13 @@ Preguntas y respuestas para la regla de negocio:
 * Cada semana se revisa para ver cuánto queda y si hay que reponer algún producto.
   
 4. ¿Permite pagarés?
-* No permite pagares.
+* No permite pagarés.
   
 5. ¿Pide el pago por adelantado?
 * No pide pago por adelantado.
   
 6. ¿Permite que las personas anoten?
-* Permite que pocos clientes tengan cuenta corriente, solamente para los mas antiguos.
+* Permite que pocos clientes tengan cuenta corriente, solamente para los más antiguos.
   
 7. ¿Acepta cheques?
-* Acepta cheques en las cuentas de clientes puntuales, es decir los mas antiguos.
+* Acepta cheques en las cuentas de clientes puntuales, es decir los más antiguos.
