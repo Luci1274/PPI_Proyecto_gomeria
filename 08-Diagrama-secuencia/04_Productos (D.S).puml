@@ -28,7 +28,7 @@
 
     DB --> Sistema: Confirmacion de almacenamiento
     Sistema --> Administrador: Mostrar mensaje de confirmacion
-    administrador -> Sistema: Solicitar lista de productos
+    Administrador -> Sistema: Solicitar lista de productos
     Sistema -> Administrador: Mostrar lista de productos en stock y faltantes
     Administrador -> Sistema: modificar precio del producto
 
@@ -39,9 +39,9 @@
         Sistema --> Administrador: Mostrar mensaje de confirmacion
     end
 
-    sistema -> DB: actualizar precio del producto
-    DB --> sistema: confirmacion de actualizacion
-    sistema --> Administrador: mostrar mensaje de confirmacion
+    Sistema -> DB: actualizar precio del producto
+    DB --> Sistema: confirmacion de actualizacion
+    Sistema --> Administrador: mostrar mensaje de confirmacion
     Sistema -> DB: Actualizar stock de productos
     DB --> Sistema: Confirmacion de actualizacion
     Sistema --> Administrador: Mostrar mensaje de confirmacion
