@@ -1,7 +1,7 @@
 ## Segunda entrevista
 El cliente es el dueño de una gomería a la altura del kilómetro 330 de la ruta 9, situada al lado de una estación de servicio. El negocio funciona de forma separada a la estación.
 
-Esta entrevista se realizo en persona ya que un integrante es hijo del cliente y nos proporcionó la siguiente información actualizada
+Esta entrevista se realizó en persona ya que un integrante es hijo del cliente y nos proporcionó la siguiente información actualizada
 
 Necesitaría que el programa sea lo más sencillo posible en el uso.
 
