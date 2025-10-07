@@ -1,7 +1,7 @@
 ## Primera entrevista
 El cliente es el dueño de una gomería a la altura del kilómetro 330 de la ruta 9, situada al lado de una estación de servicio.
 
-La entrevista fue realiza mediante una llamada telefonica
+La entrevista fue realiza mediante una llamada telefónica
 
 ### Preguntas al cliente
 
