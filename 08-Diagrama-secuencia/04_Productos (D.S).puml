@@ -1,62 +1,54 @@
-@startuml Productos
+@startuml
+title Diagrama de Secuencia - Gestión de Productos
 
-    actor Administrador
-    participant Sistema
-    database "Base de Datos" as DB
+actor Administrador
+participant "Sistema" as Sistema
+database "Base de Datos" as DB
 
-    Administrador -> Sistema: Registrar Producto
+== Registro de Producto ==
 
-    alt producto existe 
-            Sistema -> Administrador: notifica y ofrece actualizar stock
-        else producto no existe
-            Sistema -> Administrador: notifica y ofrece registrar nuevo producto
-    end
+Administrador -> Sistema: Registrar producto
 
-    Sistema -> Administrador: Mostrar Formulario de registro
+alt Producto existe
+    Sistema -> Administrador: Notifica y ofrece actualizar stock
+else Producto no existe
+    Sistema -> Administrador: Notifica y ofrece registrar nuevo producto
+end
 
-    loop hasta completar datos
-        Sistema -> Administrador: Mostrar mensaje de error y solicitar completar datos
-    end
+Sistema -> Administrador: Mostrar formulario de registro
 
-    Administrador -> Sistema: Ingresar datos del producto
-    Sistema -> DB: Almacenar datos del producto
+loop Hasta completar datos
+    Sistema -> Administrador: Mostrar mensaje de error\nSolicitar completar datos
+end
 
-    alt error en almacenamiento
-        DB --> Sistema: aviso de error
-        Sistema --> Administrador: Mostrar mensaje de error
-    end
+Administrador -> Sistema: Ingresar datos del producto
+Sistema -> DB: Almacenar datos del producto
 
-    DB --> Sistema: Confirmacion de almacenamiento
-    Sistema --> Administrador: Mostrar mensaje de confirmacion
-    administrador -> Sistema: Solicitar lista de productos
-    Sistema -> Administrador: Mostrar lista de productos en stock y faltantes
-    Administrador -> Sistema: modificar precio del producto
+alt Error en almacenamiento
+    DB --> Sistema: Aviso de error
+    Sistema --> Administrador: Mostrar mensaje de error
+else Almacenamiento exitoso
+    DB --> Sistema: Confirmación de almacenamiento
+    Sistema --> Administrador: Mostrar mensaje de confirmación
+end
 
-    opt Producto fuera de venta
-        Administrador -> Sistema: Marcar producto como fuera de venta
-        Sistema -> DB: Actualizar estado del producto
-        DB --> Sistema: Confirmacion de actualizacion
-        Sistema --> Administrador: Mostrar mensaje de confirmacion
-    end
+== Consulta de Productos ==
 
-    sistema -> DB: actualizar precio del producto
-    DB --> sistema: confirmacion de actualizacion
-    sistema --> Administrador: mostrar mensaje de confirmacion
-    Sistema -> DB: Actualizar stock de productos
-    DB --> Sistema: Confirmacion de actualizacion
-    Sistema --> Administrador: Mostrar mensaje de confirmacion
+Administrador -> Sistema: Solicitar lista de productos
+Sistema -> Administrador: Mostrar lista de productos\n(en stock y faltantes)
 
-   
+== Modificación de Productos ==
 
-    
-    
+Administrador -> Sistema: Modificar precio del producto
+Sistema -> DB: Actualizar precio del producto
+DB --> Sistema: Confirmación de actualización
+Sistema --> Administrador: Mostrar mensaje de confirmación
 
-
-
-
-
-
-
-
+opt Producto fuera de venta
+    Administrador -> Sistema: Marcar producto como fuera de venta
+    Sistema -> DB: Actualizar estado del producto
+    DB --> Sistema: Confirmación de actualización
+    Sistema --> Administrador: Mostrar mensaje de confirmación
+end
 
 @enduml

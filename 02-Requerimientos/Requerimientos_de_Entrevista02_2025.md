@@ -6,7 +6,7 @@
 
 3. Filtrar productos e insumos basados en su stock
 
-4. Crear listado o relacion de productos e insumos
+4. Crear listado o relación de productos e insumos
 
 5. Ver el porcentaje de precio de forma semanal
 

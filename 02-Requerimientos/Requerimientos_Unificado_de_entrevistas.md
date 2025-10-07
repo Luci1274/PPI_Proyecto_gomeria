@@ -5,19 +5,19 @@
 3. Eliminar compras
 4. Filtrar compras
 5. Visualizar listado de compra
-6. Registrar item de compra 
-7. Modificar item de compra
-8. Eliminar item de compra
-9. Visualizar item de compra.
+6. Registrar ítem de compra 
+7. Modificar ítem de compra
+8. Eliminar ítem de compra
+9. Visualizar ítem de compra.
 
 ## Ventas:
 1. Registrar ventas
 2. Modificar ventas
 3. Eliminar ventas 
 4. Filtrar ventas
-5. Registrar item de venta
-6. Modificar item de venta
-7. Eliminar item de venta
+5. Registrar ítem de venta
+6. Modificar ítem de venta
+7. Eliminar ítem de venta
 8. Emitir facturas 
 9. Filtrar ganancias
 
@@ -25,10 +25,10 @@
 1. Registrar cliente
 2. Modificar
 3. Eliminar
-4. Visualizar listado de cliente antiguos.
+4. Visualizar listado de clientes antiguos.
 
 ## Proveedor
-1. Mostras tabla de productos 
+1. Mostrar tabla de productos 
 
 ## Productos
 1. Registrar productos
