@@ -1,0 +1,41 @@
+@startchen
+
+entity proveedores {
+  id: INT <<key>>
+  nombre: VARCHAR
+  CUIT: INT
+  telefono: INT
+  correo electronico: VARCHAR
+}
+
+entity cuentas_corrientes {
+  id: INT <<key>>
+  nombre: VARCHAR
+  DNI: INT 
+  telefono: INT
+  correo electronico: VARCHAR
+}
+
+entity productos {
+  id: INT <<key>>
+  nombre: VARCHAR
+  precio: FLOAT
+  tipo: VARCHAR
+  codigo: INT 
+  descripcion: VARCHAR
+  cantidad: INT
+}
+
+relationship compra{
+}
+
+relationship venta{
+}
+
+proveedores -1- compra
+compra -N- productos
+
+cuentas_corrientes -1- venta
+venta -N- productos
+
+@endchen
