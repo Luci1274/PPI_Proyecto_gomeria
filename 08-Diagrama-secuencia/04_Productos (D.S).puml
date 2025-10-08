@@ -7,7 +7,7 @@ database "Base de Datos" as DB
 
 == Registro de Producto ==
 
-Administrador -> Sistema: Registrar producto
+Administrador -> Sistema: Registrar producto (nombre, cantidad, precio)
 
 alt Producto existe
     Sistema -> Administrador: Notifica y ofrece actualizar stock
