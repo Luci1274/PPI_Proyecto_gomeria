@@ -17,7 +17,7 @@ Sistema --> Admin: Mostrar listado
 == Registro de venta ==
 Admin -> Sistema: Seleccionar "Realizar venta"
 Sistema --> Admin: Mostrar formulario de venta
-Admin -> Sistema: Ingresar detalles de venta
+Admin -> Sistema: Ingresar datos de venta [fecha, forma_de_pago, descuento, factura, iva]
 Sistema -> BD: Guardar datos de venta
 BD --> Sistema: Confirmación
 Sistema --> Admin: Mensaje de éxito
@@ -26,7 +26,7 @@ Sistema --> Admin: Mensaje de éxito
 == Items de venta ==
 Admin -> Sistema: Seleccionar "Agregar item"
 Sistema --> Admin: Visualizar información ítem
-Admin -> Sistema: Ingresar datos del ítem
+Admin -> Sistema: Ingresar datos del ítem [nombre_producto, precio_unitario, cantidad]
 
 
 alt Producto existe
