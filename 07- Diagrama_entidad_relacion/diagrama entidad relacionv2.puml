@@ -1,0 +1,181 @@
+@startchen ventas_compras
+
+' === ENTIDADES ===
+entity "Venta" as VENTA {
+  venta_id : INTEGER <<key>>
+  fecha : DATE
+  hora : TIME
+  forma_de_pago : STRING
+  descuento : FLOAT
+  iva : FLOAT
+  cantidad_total_productos : INTEGER
+  precio_total : FLOAT
+  factura_tipo : STRING
+  factura_numero : STRING
+  factura_fecha_emision : DATE
+}
+
+entity "Item Venta" as ITEM_VENTA {
+  item_venta_id : INTEGER <<key>>
+  nombre_producto : STRING
+  precio_unitario : FLOAT
+  cantidad : INTEGER
+  subtotal : FLOAT
+}
+
+entity "Compra" as COMPRA {
+  compra_id : INTEGER <<key>>
+  fecha : DATE
+  hora : TIME
+  forma_de_pago : STRING
+  iva : FLOAT
+  cantidad_total_comprada : INTEGER
+  precio_total : FLOAT
+}
+
+entity "Item Compra" as ITEM_COMPRA {
+  item_compra_id : INTEGER <<key>>
+  nombre_producto : STRING
+  precio_unitario : FLOAT
+  cantidad : INTEGER
+  subtotal : FLOAT
+}
+
+entity "Producto" as PRODUCTO {
+  producto_id : INTEGER <<key>>
+  nombre : STRING
+  tipo : STRING
+  marca : STRING
+  precio_unitario : FLOAT
+  cantidad : INTEGER
+}
+
+entity "Stock" as STOCK {
+  stock_id : INTEGER <<key>>
+  precio_unitario : FLOAT
+  cantidad : INTEGER
+  porcentaje_venta : FLOAT
+}
+
+entity "Historial Precio" as HIST_PRECIO {
+  hist_precio_id : INTEGER <<key>>
+  precio_unitario : FLOAT
+  fecha_inicio_vigencia : DATE
+  fecha_fin_vigencia : DATE
+}
+
+entity "Historial Movimiento" as HIST_MOV {
+  mov_id : INTEGER <<key>>
+  tipo_movimiento : STRING   
+  referencia_tipo : STRING   
+  referencia_id : INTEGER
+  fecha : DATE
+  cantidad : INTEGER
+}
+
+entity "Cliente" as CLIENTE {
+  cliente_id : INTEGER <<key>>
+  nombre : STRING
+  apellido : STRING
+  plazo_de_pago : INTEGER
+  deuda : FLOAT
+  forma_de_contacto : STRING
+}
+
+entity "Pago" as PAGO {
+  pago_id : INTEGER <<key>>
+  fecha : DATE
+  hora : TIME
+  monto : FLOAT
+  forma_de_pago : STRING
+}
+
+entity "Proveedor" as PROVEEDOR {
+  proveedor_id : INTEGER <<key>>
+  CUIT : INTEGER
+  direccion : STRING
+  forma_de_contacto : STRING
+}
+
+' === RELACIONES (diamantes) ===
+relationship "Contiene Venta" as CONTIENE_VENTA {
+  cantidad : INTEGER
+  precio_unitario : FLOAT
+  subtotal : FLOAT
+}
+
+relationship "Contiene Compra" as CONTIENE_COMPRA {
+  cantidad : INTEGER
+  precio_unitario : FLOAT
+  subtotal : FLOAT
+}
+
+relationship "Tiene Stock" as TIENE_STOCK { 
+}
+
+relationship "Tiene Historial Precio" as TIENE_HISTPRECIO {
+  fecha_inicio_vigencia : DATE
+  fecha_fin_vigencia : DATE
+  precio_unitario : FLOAT
+}
+
+relationship "Tiene Movimiento" as TIENE_MOV {
+  tipo_movimiento : STRING
+  cantidad : INTEGER
+  fecha : DATE
+}
+
+relationship "Realiza" as REALIZA {
+  fecha : DATE
+  hora : TIME
+  precio_total : FLOAT
+}
+
+relationship "Efectua Pago" as EFECTUA_PAGO {
+  fecha : DATE
+  hora : TIME
+  monto : FLOAT
+}
+
+relationship "Suministra" as SUMINISTRA { 
+}
+
+' === ENLACES / CARDINALIDADES (uso ALIASES en enlaces) ===
+
+' Venta 1..N ItemVenta  (una Venta contiene 1..N Item Venta)
+VENTA -1- CONTIENE_VENTA
+CONTIENE_VENTA -N- ITEM_VENTA
+
+' Compra 1..N ItemCompra
+COMPRA -1- CONTIENE_COMPRA
+CONTIENE_COMPRA -N- ITEM_COMPRA
+
+' Producto - Stock  (asumí 1 producto tiene 1 registro de stock actual)
+PRODUCTO -1- TIENE_STOCK
+TIENE_STOCK -1- STOCK
+
+' Producto - Historial Precio (1 producto tiene N históricos)
+PRODUCTO -1- TIENE_HISTPRECIO
+TIENE_HISTPRECIO -N- HIST_PRECIO
+
+' Producto - Historial Movimiento (1 producto tiene N movimientos)
+PRODUCTO -1- TIENE_MOV
+TIENE_MOV -N- HIST_MOV
+
+' Cliente - Compra (historial de compras: 1 Cliente realiza N Compras)
+CLIENTE -1- REALIZA
+REALIZA -N- COMPRA
+
+' Cliente - Pago (historial de pagos: 1 Cliente efectúa N Pagos)
+CLIENTE -1- EFECTUA_PAGO
+EFECTUA_PAGO -N- PAGO
+
+' Proveedor - Compra (1 Proveedor suministra N Compras)
+PROVEEDOR -1- SUMINISTRA
+SUMINISTRA -N- COMPRA
+
+' Opcional: relacionar Item Venta/Compra con Producto (referencia al producto vendido/comprado)
+ITEM_VENTA -- PRODUCTO
+ITEM_COMPRA -- PRODUCTO
+
+@endchen
