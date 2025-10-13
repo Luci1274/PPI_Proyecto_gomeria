@@ -1,4 +1,6 @@
-@startuml 
+@startuml Compra
+
+title Diagrama de secuencia - Compra
 
 participant Sistema
 database Database as DB

@@ -1,7 +1,6 @@
 @startuml Venta
 title Diagrama de Secuencia - Venta
 
-
 actor Administrador as Admin
 participant Sistema as Sistema
 database Base_de_datos as BD
