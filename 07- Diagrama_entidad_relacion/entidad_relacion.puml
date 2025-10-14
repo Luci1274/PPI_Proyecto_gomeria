@@ -2,7 +2,6 @@
 
 ' === ENTIDADES ===
 entity "Venta" as VENTA {
-  venta_id : INTEGER <<key>>
   fecha : DATE
   hora : TIME
   forma_de_pago : STRING
@@ -11,7 +10,7 @@ entity "Venta" as VENTA {
   cantidad_total_productos : INTEGER
   precio_total : FLOAT
   factura_tipo : STRING
-  factura_numero : STRING
+  factura_numero : STRING <<key>>
   factura_fecha_emision : DATE
 }
 
@@ -42,16 +41,15 @@ entity "Item Compra" as ITEM_COMPRA {
 }
 
 entity "Producto" as PRODUCTO {
-  producto_id : INTEGER <<key>>
-  nombre : STRING
-  tipo : STRING
-  marca : STRING
+  nombre : STRING <<key>>
+  tipo : STRING <<key>>
+  marca : STRING <<key>>
   precio_unitario : FLOAT
   cantidad : INTEGER
 }
 
 entity "Stock" as STOCK {
-  stock_id : INTEGER <<key>>
+  codigo : INTEGER <<key>>
   precio_unitario : FLOAT
   cantidad : INTEGER
   porcentaje_venta : FLOAT
@@ -65,16 +63,15 @@ entity "Historial Precio" as HIST_PRECIO {
 }
 
 entity "Historial Movimiento" as HIST_MOV {
-  mov_id : INTEGER <<key>>
   tipo_movimiento : STRING   
-  referencia_tipo : STRING   
-  referencia_id : INTEGER
-  fecha : DATE
+  referencia_tipo : STRING <<key>>   
+  referencia_id : INTEGER <<key>>
+  fecha : DATE <<key>>
   cantidad : INTEGER
 }
 
 entity "Cliente" as CLIENTE {
-  cliente_id : INTEGER <<key>>
+  CUIT : INTEGER <<key>>
   nombre : STRING
   apellido : STRING
   plazo_de_pago : INTEGER
@@ -83,7 +80,7 @@ entity "Cliente" as CLIENTE {
 }
 
 entity "Pago" as PAGO {
-  pago_id : INTEGER <<key>>
+  comprobante_num : INT <<key>>
   fecha : DATE
   hora : TIME
   monto : FLOAT
@@ -91,50 +88,31 @@ entity "Pago" as PAGO {
 }
 
 entity "Proveedor" as PROVEEDOR {
-  proveedor_id : INTEGER <<key>>
-  CUIT : INTEGER
+  CUIT : INTEGER <<key>>
   direccion : STRING
   forma_de_contacto : STRING
 }
 
 ' === RELACIONES (diamantes) ===
 relationship "Contiene Venta" as CONTIENE_VENTA {
-  cantidad : INTEGER
-  precio_unitario : FLOAT
-  subtotal : FLOAT
 }
 
 relationship "Contiene Compra" as CONTIENE_COMPRA {
-  cantidad : INTEGER
-  precio_unitario : FLOAT
-  subtotal : FLOAT
 }
 
 relationship "Tiene Stock" as TIENE_STOCK { 
 }
 
 relationship "Tiene Historial Precio" as TIENE_HISTPRECIO {
-  fecha_inicio_vigencia : DATE
-  fecha_fin_vigencia : DATE
-  precio_unitario : FLOAT
 }
 
 relationship "Tiene Movimiento" as TIENE_MOV {
-  tipo_movimiento : STRING
-  cantidad : INTEGER
-  fecha : DATE
 }
 
 relationship "Realiza" as REALIZA {
-  fecha : DATE
-  hora : TIME
-  precio_total : FLOAT
 }
 
 relationship "Efectua Pago" as EFECTUA_PAGO {
-  fecha : DATE
-  hora : TIME
-  monto : FLOAT
 }
 
 relationship "Suministra" as SUMINISTRA { 
@@ -164,7 +142,7 @@ TIENE_MOV -N- HIST_MOV
 
 ' Cliente - Compra (historial de compras: 1 Cliente realiza N Compras)
 CLIENTE -1- REALIZA
-REALIZA -N- COMPRA
+REALIZA -N- VENTA
 
 ' Cliente - Pago (historial de pagos: 1 Cliente efectúa N Pagos)
 CLIENTE -1- EFECTUA_PAGO
