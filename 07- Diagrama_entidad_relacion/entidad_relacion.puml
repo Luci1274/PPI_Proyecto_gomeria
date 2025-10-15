@@ -2,24 +2,20 @@
 
 ' === ENTIDADES ===
 entity "Venta" as VENTA {
-  fecha : DATE
-  hora : TIME
+  venta_id : <<key>>
   forma_de_pago : STRING
   descuento : FLOAT
   iva : FLOAT
   cantidad_total_productos : INTEGER
-  precio_total : FLOAT
   factura_tipo : STRING
-  factura_numero : STRING <<key>>
+  factura_numero : STRING
   factura_fecha_emision : DATE
 }
 
 entity "Item Venta" as ITEM_VENTA {
   item_venta_id : INTEGER <<key>>
   nombre_producto : STRING
-  precio_unitario : FLOAT
   cantidad : INTEGER
-  subtotal : FLOAT
 }
 
 entity "Compra" as COMPRA {
@@ -29,44 +25,41 @@ entity "Compra" as COMPRA {
   forma_de_pago : STRING
   iva : FLOAT
   cantidad_total_comprada : INTEGER
-  precio_total : FLOAT
 }
 
 entity "Item Compra" as ITEM_COMPRA {
   item_compra_id : INTEGER <<key>>
   nombre_producto : STRING
-  precio_unitario : FLOAT
   cantidad : INTEGER
-  subtotal : FLOAT
 }
 
 entity "Producto" as PRODUCTO {
-  nombre : STRING <<key>>
-  tipo : STRING <<key>>
-  marca : STRING <<key>>
-  precio_unitario : FLOAT
-  cantidad : INTEGER
+  codigo_producto : STRING <<key>>
+  nombre : STRING
+  tipo : STRING
+  marca : STRING
+  medida : STRING
 }
 
 entity "Stock" as STOCK {
-  codigo : INTEGER <<key>>
-  precio_unitario : FLOAT
+  codigo_producto : INTEGER <<key>>
   cantidad : INTEGER
   porcentaje_venta : FLOAT
 }
 
 entity "Historial Precio" as HIST_PRECIO {
-  hist_precio_id : INTEGER <<key>>
+  codigo_producto : STRING <<key>>
   precio_unitario : FLOAT
   fecha_inicio_vigencia : DATE
   fecha_fin_vigencia : DATE
 }
 
 entity "Historial Movimiento" as HIST_MOV {
+  codigo_producto : STRING <<key>>
   tipo_movimiento : STRING   
-  referencia_tipo : STRING <<key>>   
-  referencia_id : INTEGER <<key>>
-  fecha : DATE <<key>>
+  referencia_tipo : STRING
+  referencia_id : INTEGER
+  fecha : DATE
   cantidad : INTEGER
 }
 
@@ -80,7 +73,8 @@ entity "Cliente" as CLIENTE {
 }
 
 entity "Pago" as PAGO {
-  comprobante_num : INT <<key>>
+  codigo_pago : STRING <<key>>
+  comprobante_num : INT 
   fecha : DATE
   hora : TIME
   monto : FLOAT
