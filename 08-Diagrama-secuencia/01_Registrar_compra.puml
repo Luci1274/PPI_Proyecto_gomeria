@@ -1,40 +1,170 @@
-@startuml 
+@startuml compra
+
+title Diagrama de Secuencia: Registrar Compra
 
 actor Administrador
 participant Sistema
-database Database as DB
+participant "Catálogo" as Cat
+participant "Multiobjeto" as MULT
 
+== Registro de Proveedor ==
 loop hasta datos correctos
-    Administrador -> Sistema: Ingresar datos proveedor
-    Sistema -> DB: Guardar cambios
-    DB --> Sistema: devolver confirmación
-    Sistema --> Administrador: mostrar confirmación
-    Administrador -> Sistema: Ingresar forma de pago
-    Sistema -> DB: Guardar cambios
-    DB --> Sistema: Devolver confirmación
-    Sistema --> Administrador: Mostrar confirmación
+    activate Administrador
+    Administrador -> Sistema: Ingresar_datos_proveedor(CUIT, contacto)
+    activate Sistema
+    Sistema -> Cat: Buscar_proveedor(CUIT)
+    activate Cat
+    Cat --> Sistema: Proveedor_encontrado | null
+    deactivate Cat
+
+    alt Proveedor no encontrado
+        Sistema --> Administrador: Mostrar_mensaje("Proveedor no registrado")
+        deactivate Sistema
+
+        Administrador -> Sistema: Agregar_proveedor(datos)
+        activate Sistema
+        create Proveedor
+        Sistema -> Proveedor: Crear(datos)
+        activate Proveedor
+        Sistema -> MULT: Guardar_proveedor(Proveedor)
+        activate MULT
+        MULT --> Sistema: Confirmar_guardado()
+        deactivate MULT
+        Sistema -> Proveedor !!: Destruir
+        deactivate Proveedor
+    else Proveedor encontrado
+        Sistema --> Administrador: Mostrar_datos_proveedor()
+    end
+    deactivate Sistema
+    deactivate Administrador
 end
-Administrador -> Sistema: Seleccionar item de compra
-Sistema --> Administrador: Mostrar item de compra
-loop hasta campos aceptados
-    Administrador -> Sistema: Llenar campos
-    Sistema -> DB: Actualizar stock
-    DB --> Sistema: Devolver confirmacion
-    Sistema --> Administrador: Mostrar confirmacion
+
+== Registro de Forma de Pago ==
+activate Administrador
+Administrador -> Sistema: Seleccionar_forma_de_pago()
+activate Sistema
+Sistema -> Cat: Validar_forma_pago()
+activate Cat
+Cat --> Sistema: Resultado_validación
+deactivate Cat
+
+alt Forma de pago válida
+    create Pago
+    Sistema -> Pago: Crear(formapago)
+    activate Pago
+    Sistema -> MULT: Guardar_forma_pago(Pago)
+    activate MULT
+    MULT --> Sistema: Confirmar_guardado()
+    deactivate MULT
+    Sistema --> Administrador: Mostrar_confirmacion("Forma de pago registrada")
+    Sistema -> Pago !!: Destruir
+    deactivate Pago
+else Forma de pago inválida
+    Sistema --> Administrador: Mostrar_error("Forma de pago inválida")
 end
-Administrador -> Sistema: Seleccionar listado de compras
-Sistema --> Administrador: Mostrar listado de compras
-loop hasta datos validos
-    Administrador -> Sistema: Ingresar datos a cambiar
-    Sistema -> DB: Validar cambios
-    DB --> Sistema: Devolver confirmacion
-    Sistema --> Administrador: Mostrar mensaje de confirmacion
+deactivate Sistema
+deactivate Administrador
+
+== Selección de Ítem de Compra ==
+activate Administrador
+Administrador -> Sistema: Seleccionar_item()
+activate Sistema
+Sistema -> Cat: Consultar_item()
+activate Cat
+Cat --> Sistema: Devolver_item()
+deactivate Cat
+Sistema --> Administrador: Mostrar_item()
+deactivate Sistema
+deactivate Administrador
+
+== Registro de Productos ==
+loop hasta datos válidos
+    
+    Administrador -> Sistema: Ingresar_datos_producto(cantidad, precio, descripción)
+    activate Administrador
+    Sistema -> Cat: Validar_datos_producto()
+    activate Sistema
+    activate Cat
+    Cat --> Sistema: Resultado_validación
+    deactivate Cat
+    alt Datos válidos
+        create Producto
+        Sistema -> Producto: Crear(datos_producto)
+        activate Producto
+        Sistema -> MULT: Guardar_producto_compra(Producto)
+        activate MULT
+        MULT --> Sistema: Confirmar_guardado()
+        Sistema -> MULT: Actualizar_stock(Producto)
+        MULT --> Sistema: Confirmar_actualizacion()
+        deactivate MULT
+        Sistema --> Administrador: Mostrar_confirmacion("Producto registrado")
+        Sistema -> Producto !!: Destruir
+        deactivate Producto
+    else Datos inválidos
+        Sistema --> Administrador: Mostrar_error("Datos del producto inválidos")
+    end
+    deactivate Sistema
+    deactivate Administrador
 end
-loop hasta datos de filtrado validos
-    Administrador -> Sistema: Filtrar listado de compra
-    Sistema -> DB: Pedir listado
-    DB --> Sistema: Devolver listado
-    Sistema --> Administrador: Mostrar listado filtrado
+
+== Listado y Modificación de Compras ==
+activate Administrador
+Administrador -> Sistema: Solicitar_listado_compras()
+activate Sistema
+Sistema -> Cat: Obtener_listado()
+activate Cat
+Cat --> Sistema: Devolver_listado()
+deactivate Cat
+Sistema --> Administrador: Mostrar_listado()
+deactivate Sistema
+deactivate Administrador
+
+loop hasta datos válidos
+    
+    Administrador -> Sistema: Modificar_datos_compra()
+    activate Administrador
+    activate Sistema
+    Sistema -> Cat: Validar_modificacion()
+    activate Cat
+    Cat --> Sistema: Resultado_validación
+    deactivate Cat
+
+    alt Datos válidos
+        create CompraModificada
+        Sistema -> CompraModificada: Crear(datos_modificados)
+        activate CompraModificada
+        Sistema -> MULT: Actualizar_registro_compra(CompraModificada)
+        activate MULT
+        MULT --> Sistema: Confirmar_actualizacion()
+        deactivate MULT
+        Sistema --> Administrador: Mostrar_confirmacion("Modificación exitosa")
+        Sistema -> CompraModificada !!: Destruir
+        deactivate CompraModificada
+    else Datos inválidos
+        Sistema --> Administrador: Mostrar_error("Datos de modificación inválidos")
+    end
+    deactivate Sistema
+    deactivate Administrador
 end
+
+== Filtrado de Compras ==
+loop hasta datos de filtrado válidos
+    activate Administrador
+    Administrador -> Sistema: Aplicar_filtro(fecha, proveedor, forma_pago)
+    activate Sistema
+    Sistema -> Cat: Obtener_listado_filtrado()
+    activate Cat
+    Cat --> Sistema: Devolver_listado_filtrado()
+    deactivate Cat
+    Sistema --> Administrador: Mostrar_listado_filtrado()
+    deactivate Sistema
+    deactivate Administrador
+end
+
+== Postcondición ==
+note over Sistema, MULT
+Compra registrada exitosamente, stock actualizado
+y registro disponible para consulta.
+end note
 
 @enduml
