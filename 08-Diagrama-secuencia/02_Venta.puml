@@ -2,118 +2,118 @@
 
 title Diagrama de Secuencia: Registrar Venta
 
-actor Administrador
-participant Sistema
+actor Administrador as Admin 
+participant Sistema as System
 participant Catálogo as Cat
 participant Multiobjeto as MULT
 
 == Registro de Forma de Pago ==
-Administrador -> Sistema: Seleccionar_forma_de_pago()
-activate Sistema
-Sistema -> Cat: Validar_forma_pago()
+Admin -> System: Seleccionar_forma_de_pago()
+activate System
+System -> Cat: Validar_forma_pago()
 activate Cat
-Cat --> Sistema: Resultado_validación
+Cat --> System: Resultado_validación
 deactivate Cat
 
 alt Forma de pago válida
    create Pago
-   Sistema -> Pago: Crear(formapago)
+   System -> Pago: Crear(formapago)
    activate Pago
-   Sistema -> MULT: Guardar_forma_pago(Pago)
+   System -> MULT: Guardar_forma_pago(Pago)
    activate MULT
-   MULT --> Sistema: Confirmar_guardado()
+   MULT --> System: Confirmar_guardado()
    deactivate MULT
-   Sistema --> Administrador: Mostrar_confirmacion("Forma de pago registrada")
+   System --> Admin: Mostrar_confirmacion("Forma de pago registrada")
    destroy Pago
 else Forma de pago inválida
-   Sistema --> Administrador: Mostrar_error("Forma de pago inválida")
+   System --> Admin: Mostrar_error("Forma de pago inválida")
 end
-deactivate Sistema
+deactivate System
 
 == Selección de Producto ==
-Administrador -> Sistema: Seleccionar_producto()
-activate Sistema
-Sistema -> Cat: Consultar_producto()
+Admin -> System: Seleccionar_producto()
+activate System
+System -> Cat: Consultar_producto()
 activate Cat
-Cat --> Sistema: Devolver_producto()
+Cat --> System: Devolver_producto()
 deactivate Cat
-Sistema --> Administrador: Mostrar_producto()
-deactivate Sistema
+System --> Admin: Mostrar_producto()
+deactivate System
 
 == Registro de Ítems de Venta ==
 loop hasta datos válidos
-   Administrador -> Sistema: Ingresar_datos_item(cantidad, precio_unitario, producto)
-   activate Sistema
-   Sistema -> Cat: Validar_disponibilidad_producto()
+   Administrador -> System: Ingresar_datos_item(cantidad, precio_unitario, producto)
+   activate System
+   System -> Cat: Validar_disponibilidad_producto()
    activate Cat
-   Cat --> Sistema: Resultado_validación
+   Cat --> System: Resultado_validación
    deactivate Cat
 
    alt Datos válidos
       create ItemVenta
-      Sistema -> ItemVenta: Crear(datos_item)
+      System -> ItemVenta: Crear(datos_item)
       activate ItemVenta
-      Sistema -> MULT: Guardar_item_venta(ItemVenta)
+      System -> MULT: Guardar_item_venta(ItemVenta)
       activate MULT
-      MULT --> Sistema: Confirmar_guardado()
+      MULT --> System: Confirmar_guardado()
       deactivate MULT
-      Sistema --> Administrador: Mostrar_confirmacion("Ítem registrado")
+      System --> Admin: Mostrar_confirmacion("Ítem registrado")
       destroy ItemVenta
    else Datos inválidos
-      Sistema --> Administrador: Mostrar_error("Datos del ítem inválidos o producto sin stock")
+      System --> Admin: Mostrar_error("Datos del ítem inválidos o producto sin stock")
    end
-   deactivate Sistema
+   deactivate System
 end
 
 == Modificación o Eliminación de Ítems ==
 loop hasta datos válidos
-   Administrador -> Sistema: Modificar_o_eliminar_item()
-   activate Sistema
-   Sistema -> Cat: Validar_modificacion_item()
+   Admin -> System: Modificar_o_eliminar_item()
+   activate System
+   System -> Cat: Validar_modificacion_item()
    activate Cat
-   Cat --> Sistema: Resultado_validación
+   Cat --> System: Resultado_validación
    deactivate Cat
 
    alt Datos válidos
       create ItemModificado
-      Sistema -> ItemModificado: Crear(datos_modificados)
+      System -> ItemModificado: Crear(datos_modificados)
       activate ItemModificado
-      Sistema -> MULT: Actualizar_item_venta(ItemModificado)
+      System -> MULT: Actualizar_item_venta(ItemModificado)
       activate MULT
-      MULT --> Sistema: Confirmar_actualizacion()
+      MULT --> System: Confirmar_actualizacion()
       deactivate MULT
-      Sistema --> Administrador: Mostrar_confirmacion("Ítem actualizado")
+      System --> Administrador: Mostrar_confirmacion("Ítem actualizado")
       destroy ItemModificado
    else Datos inválidos
-      Sistema --> Administrador: Mostrar_error("Datos del ítem inválidos")
+      System --> Administrador: Mostrar_error("Datos del ítem inválidos")
    end
-   deactivate Sistema
+   deactivate System
 end
 
 == Confirmación de Venta ==
-Administrador -> Sistema: Confirmar_venta()
-activate Sistema
+Admin -> System: Confirmar_venta()
+activate System
 create Venta
-Sistema -> Venta: Crear(datos_venta)
+System -> Venta: Crear(datos_venta)
 activate Venta
-Sistema -> MULT: Guardar_venta(Venta)
+System -> MULT: Guardar_venta(Venta)
 activate MULT
-MULT --> Sistema: Confirmar_guardado()
+MULT --> System: Confirmar_guardado()
 deactivate MULT
-Sistema --> Administrador: Mostrar_confirmacion("Venta registrada correctamente")
+System --> Admin: Mostrar_confirmacion("Venta registrada correctamente")
 destroy Venta
-deactivate Sistema
+deactivate System
 
 == Filtrado o Consulta de Ventas ==
 loop hasta datos de filtrado válidos
-   Administrador -> Sistema: Aplicar_filtro(fecha, cliente, forma_pago)
-   activate Sistema
-   Sistema -> Cat: Obtener_listado_filtrado()
+   Admin -> System: Aplicar_filtro(fecha, cliente, forma_pago)
+   activate System
+   System -> Cat: Obtener_listado_filtrado()
    activate Cat
-   Cat --> Sistema: Devolver_listado_filtrado()
+   Cat --> System: Devolver_listado_filtrado()
    deactivate Cat
-   Sistema --> Administrador: Mostrar_listado_filtrado()
-   deactivate Sistema
+   System --> Admin: Mostrar_listado_filtrado()
+   deactivate System
 end
 
 @enduml
