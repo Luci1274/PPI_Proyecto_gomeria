@@ -3,13 +3,13 @@
 # Precondiciones:
 
 # Caminos Básico:
-1. El administrador ingresa proveedor.
+1. El administrador ingresa proveedor(Cuit, contacto).
 2. El sistema guarda los datos.
-3. El administrador ingresa forma de pago. 
+3. El administrador ingresa forma de pago (Efectivo | Tarjeta | Transferencia). 
 4. El sistema guarda los datos.
 5. El administrador seleccionar ítem de compra
 6. El sistema visualiza el ítem de compra.
-7. El administrador registra productos, cantidad, precio unitario y guarda los datos.
+7. El administrador registra productos con (nombre, tipo, marca, cantidad, precio unitario) y guarda los datos.
 8. El administrador guarda los datos.
 9. El sistema guarda los datos.
 10. El sistema visualiza la información ingresada.
@@ -24,15 +24,24 @@
 
 # Caminos Alternativos:
 1.A Datos del proveedor no válidos.
-1.A.1 EL sistema muestra error y vuelve al paso 1
+    
+    1.A.1 EL sistema muestra error y vuelve al paso 1
+
 3.A Forma de pago inválida.
-3.A.1 El sistema muestra error y vuelve al paso 3.
+
+    3.A.1 El sistema muestra error y vuelve al paso 3.
+
 7.A Datos del producto invalidos.
-7.A.1 El sistema muestra error y vuelve al paso 7.
+
+    7.A.1 El sistema muestra error y vuelve al paso 7.
+
 14.A Datos de modificación invalidos.
-14.A.1 El sistema muestra error y vuelve al paso 14
+
+    14.A.1 El sistema muestra error y vuelve al paso 14
+
 17.A Datos de filtrado inválidos.
-17.A.1 El sistema muestra error y vuelve al paso 17.
+
+    17.A.1 El sistema muestra error y vuelve al paso 17.
 
 # Postcondiciones: Compra registrada en el sistema.
 # Escenarios de Éxito: 
