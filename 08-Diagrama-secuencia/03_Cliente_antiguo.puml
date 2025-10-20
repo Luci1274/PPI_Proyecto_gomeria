@@ -2,82 +2,82 @@
 
 title Diagrama de Secuencia: Cliente Antiguo
 
-actor Administrador 
-participant Sistema
+actor Administrador as Admin
+participant Sistema as System
 participant Catálogo as Cat
 participant Multiobjeto as MULT
 
 == Inicio ==
-Administrador -> Sistema: Ingresar_pantalla_cliente_antiguo()
-activate Sistema
-Sistema -> Cat: Consultar_clientes_antiguos()
+Admin -> System: Ingresar_pantalla_cliente_antiguo()
+activate System
+System -> Cat: Consultar_clientes_antiguos()
 activate Cat
-Cat --> Sistema: Devolver_listado_clientes()
+Cat --> System: Devolver_listado_clientes()
 deactivate Cat
-Sistema --> Administrador: Visualizar_listado_clientes()
-deactivate Sistema
+System --> Admin: Visualizar_listado_clientes()
+deactivate System
 
 == Registrar Cliente Antiguo ==
-Administrador -> Sistema: Registrar_cliente_antiguo()
-activate Sistema
-Sistema --> Administrador: Mostrar_formulario()
-Administrador -> Sistema: Ingresar_datos_cliente(nombre, CUIT_CUIL, telefono, email)
+Admin -> System: Registrar_cliente_antiguo()
+activate System
+System --> Admin: Mostrar_formulario()
+Admin -> System: Ingresar_datos_cliente(nombre, CUIT_CUIL, telefono, email)
 
 alt Datos válidos
-    Sistema -> Cat: Validar_cliente_existente(CUIT_CUIL)
+    System -> Cat: Validar_cliente_existente(CUIT_CUIL)
     activate Cat
-    Cat --> Sistema: Resultado_validación
+    Cat --> System: Resultado_validación
     deactivate Cat
 
     alt Cliente no existe
         create Cliente
-        Sistema -> Cliente: Crear(nombre, CUIT_CUIL, telefono, email)
+        System -> Cliente: Crear(nombre, CUIT_CUIL, telefono, email)
         activate Cliente
-        Sistema -> MULT: Guardar_cliente(Cliente)
+        System -> MULT: Guardar_cliente(Cliente)
         activate MULT
-        MULT --> Sistema: Confirmar_guardado()
+        MULT --> System: Confirmar_guardado()
         deactivate MULT
-        Sistema --> Administrador: Mostrar_confirmacion("Cliente registrado correctamente")
+        System --> Admin: Mostrar_confirmacion("Cliente registrado correctamente")
         destroy Cliente
     else Cliente ya existente
-        Sistema --> Administrador: Mostrar_error("El cliente ya está registrado")
+        System --> Admin: Mostrar_error("El cliente ya está registrado")
     end
 
 else Datos inválidos
-    Sistema --> Administrador: Mostrar_error("Error de validación de datos")
+    System --> Admin: Mostrar_error("Error de validación de datos")
 end
-deactivate Sistema
+deactivate System
 
-opt Administrador cancela formulario
-    Administrador -> Sistema: Seleccionar_cancelar()
-    activate Sistema
-    Sistema --> Administrador: Volver_listado_clientes()
-    deactivate Sistema
+opt Admin cancela formulario
+    Admin -> System: Seleccionar_cancelar()
+    activate System
+    System --> Admin: Volver_listado_clientes()
+    deactivate System
 end
 
 == Modificar o Eliminar Cliente ==
 loop hasta operación válida
-    Administrador -> Sistema: Modificar_o_eliminar_cliente()
-    activate Sistema
-    Sistema -> Cat: Validar_operacion_cliente()
+    Admin -> System: Modificar_o_eliminar_cliente()
+    activate System
+    System -> Cat: Validar_operacion_cliente()
     activate Cat
-    Cat --> Sistema: Resultado_validación
+    Cat --> System: Resultado_validación
     deactivate Cat
 
     alt Datos válidos
         create ClienteActualizado
-        Sistema -> ClienteActualizado: Crear(datos_actualizados)
+        System -> ClienteActualizado: Crear(datos_actualizados)
         activate ClienteActualizado
-        Sistema -> MULT: Actualizar_datos_cliente(ClienteActualizado)
+        System -> MULT: Actualizar_datos_cliente(ClienteActualizado)
         activate MULT
-        MULT --> Sistema: Confirmar_actualizacion()
+        MULT --> System: Confirmar_actualizacion()
         deactivate MULT
-        Sistema --> Administrador: Mostrar_confirmacion("Cliente actualizado correctamente")
+        System --> Admin: Mostrar_confirmacion("Cliente actualizado correctamente")
         destroy ClienteActualizado
     else Error al validar datos
-        Sistema --> Administrador: Mostrar_error("Error en los datos del cliente")
+        System --> Admin: Mostrar_error("Error en los datos del cliente")
     end
-    deactivate Sistema
+    deactivate System
 end
 
 @enduml
