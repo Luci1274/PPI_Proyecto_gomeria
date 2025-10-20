@@ -3,11 +3,13 @@ title Diagrama de Secuencia - Gestión de Productos
 
 actor Administrador
 participant "Sistema" as Sistema
-database "Base de Datos" as DB
+participant "catalogo" as C
+participant "multiobjeto" as MO
 
 == Registro de Producto ==
 
 Administrador -> Sistema: Registrar producto (nombre, cantidad, precio)
+activate Sistema
 
 alt Producto existe
     Sistema -> Administrador: Notifica y ofrece actualizar stock
@@ -20,35 +22,55 @@ Sistema -> Administrador: Mostrar formulario de registro
 loop Hasta completar datos
     Sistema -> Administrador: Mostrar mensaje de error\nSolicitar completar datos
 end
+deactivate Sistema
 
 Administrador -> Sistema: Ingresar datos del producto
-Sistema -> DB: Almacenar datos del producto
+activate Sistema
+Sistema -> MO: Almacenar datos del producto
+activate MO
 
 alt Error en almacenamiento
-    DB --> Sistema: Aviso de error
+    MO --> Sistema: Aviso de error
+    deactivate MO
     Sistema --> Administrador: Mostrar mensaje de error
 else Almacenamiento exitoso
-    DB --> Sistema: Confirmación de almacenamiento
+    MO --> Sistema: Confirmación de almacenamiento
+    deactivate MO
     Sistema --> Administrador: Mostrar mensaje de confirmación
 end
+deactivate Sistema
 
 == Consulta de Productos ==
 
 Administrador -> Sistema: Solicitar lista de productos
-Sistema -> Administrador: Mostrar lista de productos\n(en stock y faltantes)
+activate Sistema
+Sistema -> C: Leer lista de productos
+activate C
+C --> Sistema: Lista de productos
+deactivate C
+Sistema --> Administrador: Mostrar lista de productos\n(en stock y faltantes)
+deactivate Sistema
 
 == Modificación de Productos ==
 
 Administrador -> Sistema: Modificar precio del producto
-Sistema -> DB: Actualizar precio del producto
-DB --> Sistema: Confirmación de actualización
+activate Sistema
+Sistema -> MO: Actualizar precio del producto
+activate MO
+MO --> Sistema: Confirmación de actualización
+deactivate MO
 Sistema --> Administrador: Mostrar mensaje de confirmación
+deactivate Sistema
 
 opt Producto fuera de venta
     Administrador -> Sistema: Marcar producto como fuera de venta
-    Sistema -> DB: Actualizar estado del producto
-    DB --> Sistema: Confirmación de actualización
+    activate Sistema
+    Sistema -> MO: Actualizar estado del producto
+    activate MO
+    MO --> Sistema: Confirmación de actualización
+    deactivate MO
     Sistema --> Administrador: Mostrar mensaje de confirmación
+    
 end
 
 @enduml
