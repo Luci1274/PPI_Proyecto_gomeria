@@ -1,25 +1,21 @@
 # Requerimientos unificados:
 ## Compras:
 1. Registrar compra
-2. Modificar compras
-3. Eliminar compras
-4. Filtrar compras
-5. Visualizar listado de compra
-6. Registrar ítem de compra 
-7. Modificar ítem de compra
-8. Eliminar ítem de compra
-9. Visualizar ítem de compra.
+2. Filtrar compras
+3. Visualizar listado de compra
+4. Registrar ítem de compra 
+5. Modificar ítem de compra
+6. Eliminar ítem de compra
+7. Visualizar ítem de compra.
 
 ## Ventas:
 1. Registrar ventas
-2. Modificar ventas
-3. Eliminar ventas 
-4. Filtrar ventas
-5. Registrar ítem de venta
-6. Modificar ítem de venta
-7. Eliminar ítem de venta
-8. Emitir facturas 
-9. Filtrar ganancias
+2. Filtrar ventas
+3. Registrar ítem de venta
+4. Modificar ítem de venta
+5. Eliminar ítem de venta
+6. Emitir facturas 
+7. Filtrar ganancias
 
 ## Cliente con antigüedad
 1. Registrar cliente

@@ -46,7 +46,7 @@ class Producto {
     }
 
 class Item {
-    - Producto: List<<Producto>>
+    - Producto: Producto
     - Cantidad: Int
     - Precio: Float
     - Descuento: Float

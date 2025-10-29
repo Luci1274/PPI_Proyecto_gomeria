@@ -4,167 +4,47 @@ title Diagrama de Secuencia: Registrar Compra
 
 actor Administrador
 participant Sistema
-participant "Catálogo" as Cat
+participant "cat_prov:Catálogo_prov" as Cat_prov
+participant "cat_fp:Catálogo_forma_pago" as Cat_fp
 participant "Multiobjeto" as MULT
 
 == Registro de Proveedor ==
 loop hasta datos correctos
-    activate Administrador
     Administrador -> Sistema: Ingresar_datos_proveedor(CUIT, contacto)
     activate Sistema
-    Sistema -> Cat: Buscar_proveedor(CUIT)
-    activate Cat
-    Cat --> Sistema: Proveedor_encontrado | null
-    deactivate Cat
+    Sistema -> Cat_prov: Buscar_proveedor(CUIT)
+    activate Cat_prov
+    Cat_prov --> Sistema: Proveedor_encontrado | null
+    deactivate Cat_prov
 
     alt Proveedor no encontrado
-        Sistema --> Administrador: Mostrar_mensaje("Proveedor no registrado")
+        Sistema --> Administrador: <<"Datos incorrectos">>
         deactivate Sistema
-
-        Administrador -> Sistema: Agregar_proveedor(datos)
-        activate Sistema
-        create Proveedor
-        Sistema -> Proveedor: Crear(datos)
-        activate Proveedor
-        Sistema -> MULT: Guardar_proveedor(Proveedor)
-        activate MULT
-        MULT --> Sistema: Confirmar_guardado()
-        deactivate MULT
-        Sistema -> Proveedor !!: Destruir
-        deactivate Proveedor
-    else Proveedor encontrado
-        Sistema --> Administrador: Mostrar_datos_proveedor()
-    end
-    deactivate Sistema
-    deactivate Administrador
+    end    
 end
 
 == Registro de Forma de Pago ==
-activate Administrador
-Administrador -> Sistema: Seleccionar_forma_de_pago()
+loop hasta seleccion valid
+Administrador -> Sistema:Seleccionar_forma_de_pago(Efectivo | Tarjeta | Transferencia)
 activate Sistema
-Sistema -> Cat: Validar_forma_pago()
-activate Cat
-Cat --> Sistema: Resultado_validación
-deactivate Cat
+Sistema -> Cat_fp: Validar_forma_pago()
+activate Cat_fp
+Cat_fp --> Sistema: Resultado_validación
+deactivate Cat_fp
 
-alt Forma de pago válida
-    create Pago
-    Sistema -> Pago: Crear(formapago)
-    activate Pago
-    Sistema -> MULT: Guardar_forma_pago(Pago)
-    activate MULT
-    MULT --> Sistema: Confirmar_guardado()
-    deactivate MULT
-    Sistema --> Administrador: Mostrar_confirmacion("Forma de pago registrada")
-    Sistema -> Pago !!: Destruir
-    deactivate Pago
-else Forma de pago inválida
-    Sistema --> Administrador: Mostrar_error("Forma de pago inválida")
+opt Forma de pago inválida
+    Sistema --> Administrador: <<"Datos incorrectos">>
 end
 deactivate Sistema
-deactivate Administrador
 
-== Selección de Ítem de Compra ==
-activate Administrador
-Administrador -> Sistema: Seleccionar_item()
-activate Sistema
-Sistema -> Cat: Consultar_item()
-activate Cat
-Cat --> Sistema: Devolver_item()
-deactivate Cat
-Sistema --> Administrador: Mostrar_item()
-deactivate Sistema
-deactivate Administrador
-
-== Registro de Productos ==
-loop hasta datos válidos
-    
-    Administrador -> Sistema: Ingresar_datos_producto(cantidad, precio, descripción)
-    activate Administrador
-    Sistema -> Cat: Validar_datos_producto()
+== creación Ítem de Compra ==
+loop tantas veces como se desee
+    create "item_compra:Item_compra" as IC
+    Administrador -> IC: Crear_item_compra(nombre, tipo, marca, cantidad, precio unitario)
+    activate IC
     activate Sistema
-    activate Cat
-    Cat --> Sistema: Resultado_validación
-    deactivate Cat
-    alt Datos válidos
-        create Producto
-        Sistema -> Producto: Crear(datos_producto)
-        activate Producto
-        Sistema -> MULT: Guardar_producto_compra(Producto)
-        activate MULT
-        MULT --> Sistema: Confirmar_guardado()
-        Sistema -> MULT: Actualizar_stock(Producto)
-        MULT --> Sistema: Confirmar_actualizacion()
-        deactivate MULT
-        Sistema --> Administrador: Mostrar_confirmacion("Producto registrado")
-        Sistema -> Producto !!: Destruir
-        deactivate Producto
-    else Datos inválidos
-        Sistema --> Administrador: Mostrar_error("Datos del producto inválidos")
-    end
+    Sistema -> MULT: Guardar_item_compra()
+    Sistema --> Administrador: NULL
     deactivate Sistema
-    deactivate Administrador
-end
-
-== Listado y Modificación de Compras ==
-activate Administrador
-Administrador -> Sistema: Solicitar_listado_compras()
-activate Sistema
-Sistema -> Cat: Obtener_listado()
-activate Cat
-Cat --> Sistema: Devolver_listado()
-deactivate Cat
-Sistema --> Administrador: Mostrar_listado()
-deactivate Sistema
-deactivate Administrador
-
-loop hasta datos válidos
-    
-    Administrador -> Sistema: Modificar_datos_compra()
-    activate Administrador
-    activate Sistema
-    Sistema -> Cat: Validar_modificacion()
-    activate Cat
-    Cat --> Sistema: Resultado_validación
-    deactivate Cat
-
-    alt Datos válidos
-        create CompraModificada
-        Sistema -> CompraModificada: Crear(datos_modificados)
-        activate CompraModificada
-        Sistema -> MULT: Actualizar_registro_compra(CompraModificada)
-        activate MULT
-        MULT --> Sistema: Confirmar_actualizacion()
-        deactivate MULT
-        Sistema --> Administrador: Mostrar_confirmacion("Modificación exitosa")
-        Sistema -> CompraModificada !!: Destruir
-        deactivate CompraModificada
-    else Datos inválidos
-        Sistema --> Administrador: Mostrar_error("Datos de modificación inválidos")
-    end
-    deactivate Sistema
-    deactivate Administrador
-end
-
-== Filtrado de Compras ==
-loop hasta datos de filtrado válidos
-    activate Administrador
-    Administrador -> Sistema: Aplicar_filtro(fecha, proveedor, forma_pago)
-    activate Sistema
-    Sistema -> Cat: Obtener_listado_filtrado()
-    activate Cat
-    Cat --> Sistema: Devolver_listado_filtrado()
-    deactivate Cat
-    Sistema --> Administrador: Mostrar_listado_filtrado()
-    deactivate Sistema
-    deactivate Administrador
-end
-
-== Postcondición ==
-note over Sistema, MULT
-Compra registrada exitosamente, stock actualizado
-y registro disponible para consulta.
-end note
-
+    deactivate IC
 @enduml
