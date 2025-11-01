@@ -1,0 +1,84 @@
+@startuml proveedor
+
+title Diagrama de Secuencia: Registrar Proveedor
+
+actor Administrador
+participant Sistema
+participant "cat_prov:Catálogo_prov" as Cat_prov
+participant "formulario:FormularioProveedor" as Formulario
+participant "Multiobjeto" as MULT
+
+== Registro de nuevo proveedor ==
+Administrador -> Sistema: Click en "Registrar Proveedor"
+activate Sistema
+Sistema -> Formulario: Cargar formulario proveedor
+activate Formulario
+Formulario --> Sistema: Formulario cargado
+deactivate Formulario
+Sistema --> Administrador: Mostrar formulario
+deactivate Sistema
+
+loop hasta datos válidos
+    Administrador -> Sistema: Ingresar_datos_proveedor(nombre, CUIT, teléfono, email)
+    activate Sistema
+    Sistema -> Cat_prov: Validar_datos(CUIT, email, teléfono)
+    activate Cat_prov
+    Cat_prov --> Sistema: Resultado_validación
+    deactivate Cat_prov
+
+    create "proveedor:Proveedor" as P
+    Sistema -> P: Inicializar(nombre, CUIT, teléfono, email)
+    activate P
+    Sistema -> MULT: Guardar_proveedor(proveedor)
+    MULT --> Sistema: OK
+    Sistema --> Administrador: <<"Proveedor registrado exitosamente">>
+    deactivate P
+    opt Datos inválidos
+        Sistema --> Administrador: <<"Datos inválidos">>
+    end
+    deactivate Sistema
+end
+
+== Regreso a pantalla anterior ==
+Administrador -> Sistema: Regresar
+activate Sistema
+Sistema -> Cat_prov: Recargar pantalla Proveedor
+activate Cat_prov
+Cat_prov --> Sistema: Pantalla recargada
+deactivate Cat_prov
+Sistema --> Administrador: Mostrar pantalla
+deactivate Sistema
+
+== Visualización de listado ==
+Administrador -> Sistema: Click en "Ver listado de proveedores"
+activate Sistema
+Sistema -> Cat_prov: Obtener_listado_proveedores()
+activate Cat_prov
+Cat_prov --> Sistema: Lista de proveedores
+deactivate Cat_prov
+Sistema --> Administrador: Mostrar listado
+deactivate Sistema
+
+== Modificación o eliminación ==
+opt Modificar o eliminar proveedor
+    Administrador -> Sistema: Seleccionar proveedor y modificar/eliminar
+    activate Sistema
+    Sistema -> Cat_prov: Obtener_datos_proveedor(CUIT)
+    activate Cat_prov
+    Cat_prov --> Sistema: Datos actuales
+    deactivate Cat_prov
+    Sistema -> MULT: Validar_cambios()
+    activate MULT
+    alt Cambios válidos
+        Sistema -> MULT: Guardar_cambios()
+        MULT --> Sistema: OK
+        Sistema --> Administrador: <<"Cambios guardados exitosamente">>
+    else Error de validación
+        MULT --> Sistema: Error
+        Sistema --> Administrador: <<"Error al guardar cambios">>
+    end
+    deactivate MULT
+    deactivate Sistema
+end
+
+@enduml

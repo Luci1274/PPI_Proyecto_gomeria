@@ -1,6 +1,6 @@
 # Caso de uso: Registrar Compra
 # Actores: Administrador
-# Precondiciones:
+# Precondiciones: Tiene que haber un proveedor en el sistema
 
 # Caminos Básico:
 1. El administrador ingresa proveedor(Cuit, contacto).
