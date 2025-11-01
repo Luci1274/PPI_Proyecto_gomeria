@@ -46,7 +46,7 @@ forma de pago = [Efectivo | Tarjeta | Transferencia]
 
 ## Proveedor
 
-proveedor = dirección + forma de contacto + CUIT
+proveedor = dirección + forma de contacto + CUIT + Nombre
 
 forma de contacto = [Teléfono | Email | Whatsapp]
 
@@ -80,3 +80,4 @@ forma de contacto = [Teléfono | Email | Whatsapp]
 |:-------|:------------|:-------------|:---------|:--------|
 | CUIT | Código único de identificación tributaria | INT | 11 | Continuo |
 | Forma de contacto | Forma de contacto del cliente | STR | 20 | Discreto |
+| Nombre | Nombre del proveedor o empresa | STR | 20 | Discreto |
