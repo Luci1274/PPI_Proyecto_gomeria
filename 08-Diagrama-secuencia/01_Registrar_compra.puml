@@ -34,8 +34,9 @@ deactivate Cat_fp
 
 opt Forma de pago inválida
     Sistema --> Administrador: <<"Datos incorrectos">>
+    deactivate Sistema
 end
-deactivate Sistema
+
 
 == creación Ítem de Compra ==
 loop tantas veces como se desee

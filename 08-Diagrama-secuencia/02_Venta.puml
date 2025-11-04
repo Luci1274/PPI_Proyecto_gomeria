@@ -7,17 +7,6 @@ participant Sistema
 participant "cat_fp:Catálogo_forma_pago" as Cat_fp
 participant "multi:Multiobjeto" as MULT
 
-== Inicio de Venta ==
-Administrador -> Sistema: Ingresar_a_pantalla_venta()
-activate Sistema
-Sistema --> Administrador: Mostrar_listado_ventas_previas_y_boton("Realizar Venta")
-deactivate Sistema
-
-Administrador -> Sistema: Seleccionar_opción("Realizar Venta")
-activate Sistema
-Sistema --> Administrador: Mostrar_formulario_venta()
-deactivate Sistema
-
 == Registro de Detalles de Venta ==
 Administrador -> Sistema: Ingresar_detalles_venta(fecha, forma_pago, descuento, factura, iva)
 activate Sistema
@@ -42,36 +31,36 @@ deactivate Sistema
 loop tantas veces como se desee
     Administrador -> Sistema: Click("Agregar ítem venta")
     activate Sistema
-    Sistema --> Administrador: Mostrar_formulario_item(nombre_producto, precio_unitario, cantidad)
-    
     alt Producto no existe
         Sistema --> Administrador: <<"Error: producto no encontrado">>
-    else
+    else Producto existente
         Administrador -> Sistema: Aceptar_item()
         Sistema -> V: Agregar_item(nombre_producto, precio_unitario, cantidad)
         activate V
         Sistema -> MULT: Guardar_item_venta()
+        Sistema --> Administrador: <<"Item guardado con exito">>
         deactivate V
-        Sistema --> Administrador: Mostrar_total_actualizado()
+        deactivate Sistema
     end
 
     opt Cancelar ítem
         Administrador -> Sistema: Click("Cancelar")
-        Sistema --> Administrador: Volver_a_formulario_venta()
+        activate Sistema
+        Sistema --> Administrador: <<"Item cancelado con exito">>
+         deactivate Sistema
     end
-    deactivate Sistema
 end
 
 == Finalizar Venta ==
 alt Cancelar Venta
     Administrador -> Sistema: Click("Cancelar Venta")
     activate Sistema
-    Sistema --> Administrador: Volver_a_formulario_venta()
+    Sistema --> Administrador: <<"Venta cancelado con exito">>
 else
     Administrador -> Sistema: Click("Finalizar Venta")
     Sistema -> V: Generar_resumen()
     activate V
-    Sistema --> Administrador: Mostrar_resumen_venta()
+    Sistema --> Administrador: <<"Venta finalizada con exito">>
     deactivate Sistema
 end
 deactivate V
@@ -81,15 +70,15 @@ Administrador -> Sistema: Click("Confirmar Venta")
 activate Sistema
 Sistema -> V: Confirmar()
 activate V
-Sistema -> MULT: Guardar_venta()
+Sistema -> MULT: Guardar_venta(venta)
 deactivate V
 Sistema --> Administrador: <<"Venta confirmada exitosamente">>
 deactivate Sistema
 
 Administrador -> Sistema: Imprimir_ticket() / Ver_historial_ventas()
 activate Sistema
-Sistema --> Administrador: Mostrar_ticket_o_historial()
+Sistema --> Administrador: <<"Mostrar_ticket_o_historial">>
 deactivate Sistema
-
 deactivate V
+
 @enduml

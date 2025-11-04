@@ -30,13 +30,15 @@ loop hasta datos válidos
     Sistema -> P: Inicializar(nombre, CUIT, teléfono, email)
     activate P
     Sistema -> MULT: Guardar_proveedor(proveedor)
+    activate MULT
     MULT --> Sistema: OK
+    deactivate MULT
     Sistema --> Administrador: <<"Proveedor registrado exitosamente">>
     deactivate P
     opt Datos inválidos
         Sistema --> Administrador: <<"Datos inválidos">>
+        deactivate Sistema
     end
-    deactivate Sistema
 end
 
 == Regreso a pantalla anterior ==
@@ -76,9 +78,9 @@ opt Modificar o eliminar proveedor
     else Error de validación
         MULT --> Sistema: Error
         Sistema --> Administrador: <<"Error al guardar cambios">>
+        deactivate MULT
+        deactivate Sistema    
     end
-    deactivate MULT
-    deactivate Sistema
 end
 
 @enduml
