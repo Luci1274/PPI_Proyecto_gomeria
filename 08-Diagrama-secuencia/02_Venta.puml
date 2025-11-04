@@ -1,76 +1,95 @@
-@startuml Venta
-title Diagrama de Secuencia - Venta
+@startuml venta
 
+title Diagrama de Secuencia: Registrar Venta
 
-actor Administrador as Admin
-participant Sistema as Sistema
-database Base_de_datos as BD
+actor Administrador
+participant Sistema
+participant "cat_fp:Catálogo_forma_pago" as Cat_fp
+participant "multi:Multiobjeto" as MULT
 
+== Inicio de Venta ==
+Administrador -> Sistema: Ingresar_a_pantalla_venta()
+activate Sistema
+Sistema --> Administrador: Mostrar_listado_ventas_previas_y_boton("Realizar Venta")
+deactivate Sistema
 
-== Inicio ==
-Admin -> Sistema: Ingresar pantalla de venta
-Sistema -> BD: Consultar ventas previas
-BD --> Sistema: Listado de ventas
-Sistema --> Admin: Mostrar listado
+Administrador -> Sistema: Seleccionar_opción("Realizar Venta")
+activate Sistema
+Sistema --> Administrador: Mostrar_formulario_venta()
+deactivate Sistema
 
+== Registro de Detalles de Venta ==
+Administrador -> Sistema: Ingresar_detalles_venta(fecha, forma_pago, descuento, factura, iva)
+activate Sistema
+Sistema -> Cat_fp: Validar_forma_pago(forma_pago)
+activate Cat_fp
+Cat_fp --> Sistema: Resultado_validación
+deactivate Cat_fp
 
-== Registro de venta ==
-Admin -> Sistema: Seleccionar "Realizar venta"
-Sistema --> Admin: Mostrar formulario de venta
-Admin -> Sistema: Ingresar detalles de venta
-Sistema -> BD: Guardar datos de venta
-BD --> Sistema: Confirmación
-Sistema --> Admin: Mensaje de éxito
-
-
-== Items de venta ==
-Admin -> Sistema: Seleccionar "Agregar item"
-Sistema --> Admin: Visualizar información ítem
-Admin -> Sistema: Ingresar datos del ítem
-
-
-alt Producto existe
-   Sistema -> BD: Guardar item
-   BD --> Sistema: Confirmación
-   Sistema --> Admin: Mostrar total actualizado
-else Producto no existe
-   Sistema --> Admin: Mostrar mensaje de error
+opt Forma de pago inválida
+    Sistema --> Administrador: <<"Datos incorrectos">>
 end
 
+create "venta:Venta" as V
+Sistema -> V: Crear_venta(fecha, forma_pago, descuento, factura, iva)
+activate V
+Sistema -> MULT: Guardar_detalles_venta()
+deactivate V
+Sistema --> Administrador: <<"Venta registrada exitosamente">>
+deactivate Sistema
 
-opt Usuario decide cancelar adición de ítem
-   Admin -> Sistema: Click en "Cancelar"
-   Sistema --> Admin: Volver al formulario de venta
+== Agregar Ítems a la Venta ==
+loop tantas veces como se desee
+    Administrador -> Sistema: Click("Agregar ítem venta")
+    activate Sistema
+    Sistema --> Administrador: Mostrar_formulario_item(nombre_producto, precio_unitario, cantidad)
+    
+    alt Producto no existe
+        Sistema --> Administrador: <<"Error: producto no encontrado">>
+    else
+        Administrador -> Sistema: Aceptar_item()
+        Sistema -> V: Agregar_item(nombre_producto, precio_unitario, cantidad)
+        activate V
+        Sistema -> MULT: Guardar_item_venta()
+        deactivate V
+        Sistema --> Administrador: Mostrar_total_actualizado()
+    end
+
+    opt Cancelar ítem
+        Administrador -> Sistema: Click("Cancelar")
+        Sistema --> Administrador: Volver_a_formulario_venta()
+    end
+    deactivate Sistema
 end
 
-
-== Modificar/Eliminar ==
-Admin -> Sistema: Modificar/Eliminar item
-Sistema -> BD: Actualizar datos
-BD --> Sistema: Confirmación
-Sistema --> Admin: Mensaje de éxito
-
-alt Usuario decide cancelar venta
-   Admin -> Sistema: Click en "Cancelar Venta"
-   Sistema --> Admin: Volver al formulario sin guardar
-else Confirmar venta
-   Admin -> Sistema: Confirmar venta
-   Sistema -> BD: Guardar venta definitiva
-   BD --> Sistema: Confirmación
-   Sistema --> Admin: Mensaje de éxito
+== Finalizar Venta ==
+alt Cancelar Venta
+    Administrador -> Sistema: Click("Cancelar Venta")
+    activate Sistema
+    Sistema --> Administrador: Volver_a_formulario_venta()
+else
+    Administrador -> Sistema: Click("Finalizar Venta")
+    Sistema -> V: Generar_resumen()
+    activate V
+    Sistema --> Administrador: Mostrar_resumen_venta()
+    deactivate Sistema
 end
+deactivate V
 
+== Confirmar y Cierre ==
+Administrador -> Sistema: Click("Confirmar Venta")
+activate Sistema
+Sistema -> V: Confirmar()
+activate V
+Sistema -> MULT: Guardar_venta()
+deactivate V
+Sistema --> Administrador: <<"Venta confirmada exitosamente">>
+deactivate Sistema
 
-== Opciones finales ==
-Admin -> Sistema: Solicitar impresión ticket
-Sistema -> BD: Obtener datos
-BD --> Sistema: Datos de venta
-Sistema --> Admin: Imprimir ticket
+Administrador -> Sistema: Imprimir_ticket() / Ver_historial_ventas()
+activate Sistema
+Sistema --> Administrador: Mostrar_ticket_o_historial()
+deactivate Sistema
 
-
+deactivate V
 @enduml
-
-
-
-
-
