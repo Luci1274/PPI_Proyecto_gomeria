@@ -6,7 +6,7 @@ actor Administrador
 participant Sistema
 participant "cat_prov:Catálogo_prov" as Cat_prov
 participant "formulario:FormularioProveedor" as Formulario
-participant "Multiobjeto" as MULT
+participant "multi:Multiobjeto" as MULT
 
 == Registro de nuevo proveedor ==
 Administrador -> Sistema: Click en "Registrar Proveedor"
