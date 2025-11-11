@@ -8,58 +8,61 @@ participant "multiobjeto" as MO
 
 == Registro de Producto ==
 
-Administrador -> Sistema: Registrar producto (nombre, cantidad, precio)
+Administrador -> Sistema: Registrar_producto (nombre, cantidad, precio)
 activate Sistema
 
-alt Producto existe
-    Sistema -> Administrador: Notifica y ofrece actualizar stock
-else Producto no existe
-    Sistema -> Administrador: Notifica y ofrece registrar nuevo producto
+alt Producto Registrado
+    Sistema --> Administrador: <<"Producto registrado, actualizar stock">>
+else Producto ya existe
+    Sistema --> Administrador: <<"El producto ya existe, registrar nuevo producto">>
+deactivate Sistema
 end
 
-Sistema -> Administrador: Mostrar formulario de registro
+
+Sistema --> Administrador: <<"formulario de registro">>
+
 
 loop Hasta completar datos
-    Sistema -> Administrador: Mostrar mensaje de error\nSolicitar completar datos
+    Sistema --> Administrador: <<"Error">>
+    Sistema --> Administrador: <<"Completar datos">>
 end
-deactivate Sistema
 
-Administrador -> Sistema: Ingresar datos del producto
+
+Administrador -> Sistema: Ingresar_datos_producto()
 activate Sistema
 Sistema -> MO: Almacenar datos del producto
 activate MO
 
 alt Error en almacenamiento
-    MO --> Sistema: Aviso de error
+    MO --> Sistema: <<Error>>
     deactivate MO
-    Sistema --> Administrador: Mostrar mensaje de error
+    Sistema --> Administrador: <<"Error en almacenamiento">>
 else Almacenamiento exitoso
-    MO --> Sistema: Confirmación de almacenamiento
+    MO --> Sistema: <<"Confirmación almacenamiento">>
     deactivate MO
-    Sistema --> Administrador: Mostrar mensaje de confirmación
+    Sistema --> Administrador: <<"Mostrar mensaje de confirmación">>
 end
 deactivate Sistema
 
 == Consulta de Productos ==
 
-Administrador -> Sistema: Solicitar lista de productos
+Administrador -> Sistema: Solicitar_lista_productos()
 activate Sistema
-Sistema -> C: Leer lista de productos
-activate C
-C --> Sistema: Lista de productos
+
+C --> Sistema: <<"Lista de productos">>
 deactivate C
-Sistema --> Administrador: Mostrar lista de productos\n(en stock y faltantes)
+Sistema --> Administrador: <<"Mostrar lista de productos\n(en stock y faltantes)">>
 deactivate Sistema
 
 == Modificación de Productos ==
 
-Administrador -> Sistema: Modificar precio del producto
+Administrador -> Sistema: Modificar_precio_producto()
 activate Sistema
-Sistema -> MO: Actualizar precio del producto
+Sistema -> MO: Actualizar_precio_producto()
 activate MO
-MO --> Sistema: Confirmación de actualización
+MO --> Sistema: <<"Confirmación de actualización">>
 deactivate MO
-Sistema --> Administrador: Mostrar mensaje de confirmación
+Sistema --> Administrador: <<"Mostrar mensaje de confirmación">>
 deactivate Sistema
 
 opt Producto fuera de venta
@@ -67,9 +70,9 @@ opt Producto fuera de venta
     activate Sistema
     Sistema -> MO: Actualizar estado del producto
     activate MO
-    MO --> Sistema: Confirmación de actualización
+    MO --> Sistema: <<"Confirmación de actualización">>
     deactivate MO
-    Sistema --> Administrador: Mostrar mensaje de confirmación
+    Sistema --> Administrador: <<"Mostrar mensaje de confirmación">>
     
 end
 
