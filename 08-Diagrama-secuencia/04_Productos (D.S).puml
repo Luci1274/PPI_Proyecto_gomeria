@@ -1,4 +1,4 @@
-@startuml
+@startuml Producto
 title Diagrama de Secuencia - Gestión de Productos
 
 actor Administrador

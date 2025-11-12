@@ -9,14 +9,6 @@ participant "formulario:FormularioProveedor" as Formulario
 participant "multi:Multiobjeto" as MULT
 
 == Registro de nuevo proveedor ==
-Administrador -> Sistema: Click en "Registrar Proveedor"
-activate Sistema
-Sistema -> Formulario: Cargar formulario proveedor
-activate Formulario
-Formulario --> Sistema: Formulario cargado
-deactivate Formulario
-Sistema --> Administrador: Mostrar formulario
-deactivate Sistema
 
 loop hasta datos válidos
     Administrador -> Sistema: Ingresar_datos_proveedor(nombre, CUIT, teléfono, email)
@@ -40,26 +32,6 @@ loop hasta datos válidos
         deactivate Sistema
     end
 end
-
-== Regreso a pantalla anterior ==
-Administrador -> Sistema: Regresar
-activate Sistema
-Sistema -> Cat_prov: Recargar pantalla Proveedor
-activate Cat_prov
-Cat_prov --> Sistema: Pantalla recargada
-deactivate Cat_prov
-Sistema --> Administrador: Mostrar pantalla
-deactivate Sistema
-
-== Visualización de listado ==
-Administrador -> Sistema: Click en "Ver listado de proveedores"
-activate Sistema
-Sistema -> Cat_prov: Obtener_listado_proveedores()
-activate Cat_prov
-Cat_prov --> Sistema: Lista de proveedores
-deactivate Cat_prov
-Sistema --> Administrador: Mostrar listado
-deactivate Sistema
 
 == Modificación o eliminación ==
 opt Modificar o eliminar proveedor
