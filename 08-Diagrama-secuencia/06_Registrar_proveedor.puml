@@ -5,7 +5,6 @@ title Diagrama de Secuencia: Registrar Proveedor
 actor Administrador
 participant Sistema
 participant "cat_prov:Catálogo_prov" as Cat_prov
-participant "formulario:FormularioProveedor" as Formulario
 participant "multi:Multiobjeto" as MULT
 
 == Registro de nuevo proveedor ==
@@ -17,7 +16,9 @@ loop hasta datos válidos
     activate Cat_prov
     Cat_prov --> Sistema: Resultado_validación
     deactivate Cat_prov
-
+    opt Datos inválidos
+        Sistema --> Administrador: <<"Datos inválidos">>
+    end
     create "proveedor:Proveedor" as P
     Sistema -> P: Inicializar(nombre, CUIT, teléfono, email)
     activate P
@@ -26,11 +27,8 @@ loop hasta datos válidos
     MULT --> Sistema: OK
     deactivate MULT
     Sistema --> Administrador: <<"Proveedor registrado exitosamente">>
+    deactivate Sistema
     deactivate P
-    opt Datos inválidos
-        Sistema --> Administrador: <<"Datos inválidos">>
-        deactivate Sistema
-    end
 end
 
 == Modificación o eliminación ==

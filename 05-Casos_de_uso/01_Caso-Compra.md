@@ -3,26 +3,21 @@
 # Precondiciones: Tiene que haber un proveedor en el sistema
 
 # Caminos Básico:
-1. El administrador ingresa proveedor(Cuit, contacto).
+1. El administrador ingresa nombre del proveedor y forma de pago (Efectivo | Tarjeta | Transferencia).
 2. El sistema guarda los datos.
-3. El administrador ingresa forma de pago (Efectivo | Tarjeta | Transferencia). 
-4. El sistema guarda los datos.
-5. El administrador crea item de compra con (productos, tipo, marca, cantidad, precio unitario) y guarda los datos.
-6. El sistema actualiza stock y guarda registro.
-
+3. El administrador crea item de compra con (productos, tipo, marca, cantidad, precio unitario) y guarda los datos.
+4. El sistema actualiza stock y guarda registro.
 
 # Caminos Alternativos:
-2.A Datos del proveedor no válidos.
+1.A Ingreso invalido.
     
-    2.A.1 EL sistema muestra error y vuelve al paso 1
+    1.A.1 EL sistema muestra error
+    1.A.2 Vuelve al paso 1
 
-4.A Forma de pago inválida.
+3.A Datos del producto invalidos.
 
-    4.A.1 El sistema muestra error y vuelve al paso 3.
-
-6.A Datos del producto invalidos.
-
-    6.A.1 El sistema muestra error y vuelve al paso 7.
+    3.A.1 El sistema muestra error 
+    3.A.2 Vuelve al paso 7.
 
 # Postcondiciones: Compra registrada en el sistema.
 # Escenarios de Éxito: 

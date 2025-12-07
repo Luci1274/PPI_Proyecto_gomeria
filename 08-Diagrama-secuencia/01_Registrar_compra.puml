@@ -10,7 +10,7 @@ participant "multi:Multiobjeto" as MULT
 
 == Registro de Proveedor ==
 loop hasta datos correctos
-    Administrador -> Sistema: Ingresar_datos_proveedor(CUIT, contacto)
+    Administrador -> Sistema: Ingresar_dato_proveedor(nombre)
     activate Sistema
     Sistema -> Cat_prov: Buscar_proveedor(CUIT)
     activate Cat_prov

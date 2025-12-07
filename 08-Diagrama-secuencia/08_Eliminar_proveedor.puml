@@ -1,0 +1,53 @@
+@startuml eliminar_proveedor
+
+title Diagrama de Secuencia: Eliminar Proveedor
+
+actor Administrador
+participant Sistema
+participant "cat_prov:Catálogo_prov" as Cat_prov
+participant "multi:Multiobjeto" as MULT
+
+== Petición de eliminación ==
+Administrador -> Sistema: Solicitar_eliminar(CUIT)
+activate Sistema
+Sistema -> Cat_prov: Verificar_dependencias(CUIT)  ' consulta al catálogo
+activate Cat_prov
+opt Error al verificar dependencias
+    Cat_prov --> Sistema: Error (BD/consulta)
+    deactivate Cat_prov
+    Sistema --> Administrador: <<"Error al verificar dependencias">>
+end
+
+alt Administración cancela eliminación
+    Sistema --> Administrador: Mostrar_confirmación
+    deactivate Sistema
+    Administrador -> Sistema: Cancelar
+    activate Sistema
+    Sistema --> Administrador: <<"Eliminación cancelada">>
+
+else Confirmación y sin dependencias
+    Sistema --> Administrador: Mostrar_confirmación
+    Administrador -> Sistema: Confirmar_eliminación
+
+    ' Persistencia: MULT solo para eliminar/guardar
+    Sistema -> MULT: Borrar_proveedor(CUIT)
+    activate MULT
+    MULT --> Sistema: OK / Error_persistencia
+    deactivate MULT
+
+    alt Eliminación OK
+        ' Opcional: actualizar cache/índice del catálogo
+        Sistema -> Cat_prov: Actualizar_estado_eliminado(CUIT)  ' refrescar consulta
+        activate Cat_prov
+        Cat_prov --> Sistema: OK
+        deactivate Cat_prov
+
+        Sistema --> Administrador: <<"Proveedor eliminado exitosamente">>
+    else Error al eliminar
+        Sistema --> Administrador: <<"Error al eliminar proveedor (BD)">>
+    end
+
+    deactivate Sistema
+end
+
+@enduml
