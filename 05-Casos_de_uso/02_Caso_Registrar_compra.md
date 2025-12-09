@@ -1,6 +1,6 @@
 # Caso de uso: Registrar Compra
 # Actores: Administrador
-# Precondiciones: Tiene que haber un proveedor en el sistema
+# Precondiciones: Tiene que haber un proveedor en el sistema, debe existir lsitado de compras.
 
 # Caminos Básico:
 1. El administrador ingresa nombre del proveedor y forma de pago (Efectivo | Tarjeta | Transferencia).

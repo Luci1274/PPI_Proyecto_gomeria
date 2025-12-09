@@ -1,103 +1,166 @@
 @startuml Gomeria
-class Persona {
-    - Nombre: String
-    - CUIT: Int
-    - Direccion: String
 
-    + Registrar_persona(): Void
-    + Modificar_persona(): Void
-    + Eliminar_persona(): Void
-    + Filtrar_persona(): Void
-    }
+class Persona {
+    - id: Int
+    - nombre: String
+    - cuit: String
+    - direccion: String
+    - telefono: String
+    - email: String
+    - creadoEn: Date
+    - actualizadoEn: Date
+
+    + getId(): Int
+    + getNombre(): String
+    + setNombre(String): Void
+    + getCUIT(): String
+    + setCUIT(String): Void
+    + getContacto(): String
+}
 
 class Proveedor {
-    - Lista_precios: Map<String, Float>
-    
-    + Registrar_proveedor(): Void 
-    + Modificar_proveedor(): Void 
-    + Eliminar_proveedor(): Void
-    + Visualizar_precios(): Void
-    }
+    - id: Int
+    - codigo: String
+    - listaPrecios: Map<String, Float>
+    - activo: Boolean
 
-class Cliente_antiguo{
+    + registrarProveedor(): Void
+    + modificarProveedor(): Void
+    + eliminarProveedor(): Void
+    + obtenerPrecios(): Map<String,Float>
+}
 
-    + Registrar_cliente(): Void
-    + Modificar_cliente(): Void
-    + Eliminar_cliente(): Void
-    + Filtrar_cliente(): Void
-    + Realizar_pago(): Void
-    + Devolver_producto(): Void
+class Cliente_antiguo {
+    - id: Int
+    - creditoMaximo: Float
+    - deudaActual: Float
+    - notas: String
 
-    }    
+    + registrarCliente(): Void
+    + modificarCliente(): Void
+    + eliminarCliente(): Void
+    + getSaldo(): Float
+    + registrarPago(Float): Void
+}
 
 class Producto {
-    - Nombre: String 
-    - Precio: Float 
-    - Tipo: String 
-    - Marca: String 
-    - Cantidad: Int 
-    - Proveedor: List<Proveedor>
-        
-    + Registrar_producto(): Void 
-    + Modificar_producto(): Void 
-    + Eliminar_producto(): Void
-    + Calcular_precio(): Void
-    + Filtrar_productos(): Void
-    }
+    - id: Int
+    - sku: String
+    - nombre: String
+    - descripcion: String
+    - precioCosto: Float
+    - precioVenta: Float
+    - tipo: String
+    - marca: String
+    - stockDisponible: Int
+    - stockMinimo: Int
+    - unidadMedida: String
+
+    + registrarProducto(): Void
+    + modificarProducto(): Void
+    + eliminarProducto(): Void
+    + calcularPrecioVenta(porcentaje: Float): Float
+    + ajustarStock(cantidad: Int, tipo: String): Void
+    + getStock(): Int
+}
 
 class Item {
-    - Producto: Producto
-    - Cantidad: Int
-    - Precio: Float
-    - Descuento: Float
-    - Nombre: String
-    - Tipo : String
-    - Marca: String
+    - id: Int
+    - productoId: Int
+    - cantidad: Int
+    - precioUnitario: Float
+    - descuento: Float
+    - subtotal: Float
 
-    + Registrar_item():Void
-    + Modificar_item(): Void
-    + Eliminar_item(): Void
-    }
+    + calcularSubtotal(): Float
+    + actualizarCantidad(Int): Void
+}
 
 class Transaccion {
-    - Numero: Int
-    - Fecha: Date
-    - Forma_de_pago: String
+    - id: Int
+    - numero: String
+    - fecha: Date
+    - total: Float
+    - estado: String       ' e.g. "ACTIVA", "ANULADA", "DADA_DE_BAJA"
+    - formaPago: String
+    - usuario: String
+    - creadoEn: Date
+    - actualizadoEn: Date
+    - motivoBaja: String
+    - usuarioBaja: String
+    - fechaBaja: Date
 
-    + Procesar(): Void 
-    + Movimiento_stock(): Void
-    + Calcular_total(): Void 
-    }
+    + procesar(): Void
+    + calcularTotal(): Float
+    + anular(motivo:String, usuario:String): Void
+}
 
 class Compra {
-    - Proveedor: List<<Proveedor>>
+    - proveedorId: Int
+    - fechaRecepcion: Date
+    - numeroFactura: String
+    - totalCompra: Float
 
-    + Registrar_compra(): Void 
-    + Modificar_compra(): Void
-    + Filtrar_compra(): Void
-    }
+    + registrarCompra(): Void
+    + modificarCompra(): Void
+    + eliminarCompra(): Void
+    + darDeBaja(motivo:String, usuario:String): Void
+}
 
 class Venta {
-    - Cliente: List<<Cliente>>
+    - clienteId: Int
+    - fechaEntrega: Date
+    - numeroComprobante: String
+    - totalVenta: Float
 
-    + Registrar_venta(): Void 
-    + Modificar_venta(): Void
-    + Filtrar_venta(): Void
-    + Calcular_ganancia(): Void 
-    + Emitir_factura(): Void
-    }
+    + registrarVenta(): Void
+    + modificarVenta(): Void
+    + eliminarVenta(): Void
+    + emitirFactura(): Void
+    + anularVenta(motivo:String, usuario:String): Void
+}
 
+class MovimientoStock {
+    - id: Int
+    - productoId: Int
+    - cantidad: Int
+    - tipo: String    ' "ENTRADA" | "SALIDA" | "BAJA"
+    - referencia: String
+    - fecha: Date
+    - usuario: String
 
+    + registrarMovimiento(): Void
+}
+
+' Herencias
 Persona <|-- Cliente_antiguo
 Persona <|-- Proveedor
 
+' Transacciones
 Transaccion <|-- Venta
 Transaccion <|-- Compra
 
-Venta "1..*" --> "1" Cliente_antiguo
-Compra "1..*" --> "1" Proveedor
-
-Venta "1" --> "1..*" Item
+' Asociaciones y multiplicidades reales
 Compra "1" --> "1..*" Item
-
+Venta  "1" --> "1..*" Item
 Item "1" --> "1" Producto
+
+' Proveedor <-> Producto: relación muchos a muchos (un producto puede tener varios proveedores y viceversa)
+Producto "0..*" -- "0..*" Proveedor : suministra
+
+' Stock y movimientos
+Producto "1" -- "0..*" MovimientoStock
+MovimientoStock "0..1" --> "0..1" Transaccion : referencia_transaccion
+
+' Relación entre compra/venta y terceros
+Compra "1" --> "1" Proveedor
+Venta "1" --> "1" Cliente_antiguo
+
+' Notas de auditoría/estado en transacciones
+note right of Transaccion
+  Transaccion contiene campos para históricos:
+  - motivoBaja, usuarioBaja, fechaBaja
+  - estado permite distinguir activas/anuladas/dadas_de_baja
+end note
+
+@enduml
