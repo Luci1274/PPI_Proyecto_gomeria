@@ -1,15 +1,15 @@
 # Caso de uso: Registrar Compra
 # Actores: Administrador
-# Precondiciones: Tiene que haber un proveedor en el sistema, debe existir lsitado de compras.
+# Precondiciones: Debe existir al menos un proveedor registrado en el sistema, debe existir el listado de compras.
 
 # Caminos Básico:
-1. El administrador ingresa nombre del proveedor y forma de pago (Efectivo | Tarjeta | Transferencia).
-2. El sistema guarda los datos.
-3. El administrador crea item de compra con (productos, tipo, marca, cantidad, precio unitario) y guarda los datos.
-4. El sistema actualiza stock y guarda registro.
+1. El administrador ingresa nombre del proveedor y selecciona la forma de pago (Efectivo | Tarjeta | Transferencia).
+2. El sistema valida y guarda los datos iniciales de la compra. 
+3. El administrador registra un ítem de compra ingresando: (productos, tipo, marca, cantidad y  precio unitario).
+4. El sistema valida la información, guarda el ítem y actualiza el stock del producto.
 
 # Caminos Alternativos:
-1.A Ingreso invalido.
+1.A Ingreso invalido de proveedor o forma de pago.
     
     1.A.1 EL sistema muestra error
     1.A.2 Vuelve al paso 1
@@ -17,7 +17,7 @@
 3.A Datos del producto invalidos.
 
     3.A.1 El sistema muestra error 
-    3.A.2 Vuelve al paso 7.
+    3.A.2 Vuelve al paso 3.
 
 # Postcondiciones: Compra registrada en el sistema.
 # Escenarios de Éxito: 
