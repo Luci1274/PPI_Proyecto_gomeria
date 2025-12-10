@@ -54,13 +54,12 @@ forma de contacto = [Teléfono | Email | Whatsapp]
 
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
-| CUIT|Es un código identificador de empresas|INT|11|Continuo|
 | Nombre_producto|Nombre que recibe un producto|STR|30|Discreto|
 | Tipo|Tipo de producto|STR|25|Discreto|
 | Marca|Marca del producto|STR|25|Discreto|
-| Precio unitario| Precio unitario del producto|FLOAT|10|Continuo|
-| Precio total| Precio total de la compra y/o venta|FLOAT|10|Continuo|
-| Stock| Cantidad de productos|INT|100|Continuo|
+| Precio unitario| Precio por unidad del producto|FLOAT|10|Continuo|
+| Precio total| Precio total de compra o venta|FLOAT|10|Continuo|
+| Stock| Cantidad disponible de productos|INT|100|Discreto|
 
 ## Tabla dato elemental cliente
 
@@ -68,16 +67,16 @@ forma de contacto = [Teléfono | Email | Whatsapp]
 |:-------|:------------|:-------------|:---------|:--------|
 | Nombre | Nombre del cliente | STR | 15 | Discreto |
 | Apellido | Apellido del cliente | STR | 15 | Discreto |
-| Plazo de pago | plazo de 30 días para pagar | INT | 2 | Discreto |
-| Deuda | Deuda del cliente | FLOAT | 15 | Continuo |
-| Historial de pago | Historial de pago del cliente | STR | 100 | Discreto |
-| Historial de compra | Historial de compra del cliente | STR | 100 | Discreto |
-| Forma de contacto | Forma de contacto del cliente | STR | 20 | Discreto |
+| Plazo de pago | Dias permitidos para pagar | INT | 2 | Discreto |
+| Deuda | Saldo adeudado del cliente | FLOAT | 15 | Continuo |
+| Historial de pago | Registro de pagos realizados | STR | 100 | Discreto |
+| Historial de compra | Registro de compras realizadas. | STR | 100 | Discreto |
+| Forma de contacto | Medio por el cual se contacta al cliente | STR | 20 | Discreto |
 
 ## Tabla dato elemental proveedor
 
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
-| CUIT | Código único de identificación tributaria | INT | 11 | Continuo |
-| Forma de contacto | Forma de contacto del cliente | STR | 20 | Discreto |
-| Nombre | Nombre del proveedor o empresa | STR | 20 | Discreto |
+| CUIT | Identificación tributaria del proovedor | INT | 11 | Continuo |
+| Forma de contacto | Medio de contacto del proovedor | STR | 20 | Discreto |
+| Nombre | Nombre del proveedor o empresa | STR | 40 | Discreto |
