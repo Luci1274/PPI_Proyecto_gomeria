@@ -77,6 +77,6 @@ forma de contacto = [Teléfono | Email | Whatsapp]
 
 | Nombre | Descripción | Tipo de dato | Longitud | Dominio |
 |:-------|:------------|:-------------|:---------|:--------|
-| CUIT | Identificación tributaria del proovedor | INT | 11 | Continuo |
-| Forma de contacto | Medio de contacto del proovedor | STR | 20 | Discreto |
+| CUIT | Identificación tributaria del proveedor | INT | 11 | Continuo |
+| Forma de contacto | Medio de contacto del proveedor | STR | 20 | Discreto |
 | Nombre | Nombre del proveedor o empresa | STR | 40 | Discreto |
