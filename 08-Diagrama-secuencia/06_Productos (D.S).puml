@@ -41,8 +41,9 @@ else Almacenamiento exitoso
     MO --> Sistema: <<"Confirmación almacenamiento">>
     deactivate MO
     Sistema --> Administrador: <<"Mostrar mensaje de confirmación">>
+    deactivate Sistema
 end
-deactivate Sistema
+
 
 == Consulta de Productos ==
 
@@ -69,11 +70,9 @@ opt Producto fuera de venta
     Administrador -> Sistema: Marcar producto como fuera de venta
     activate Sistema
     Sistema -> MO: Actualizar estado del producto
-    activate MO
     MO --> Sistema: <<"Confirmación de actualización">>
-    deactivate MO
     Sistema --> Administrador: <<"Mostrar mensaje de confirmación">>
-    
+    deactivate Sistema
 end
 
 @enduml
