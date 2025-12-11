@@ -45,8 +45,10 @@ alt Datos válidos
 
 else Datos inválidos
     System --> Admin: Mostrar_error("Error de validación de datos")
-end
 deactivate System
+end
+
+
 
 opt Admin cancela formulario
     Admin -> System: Seleccionar_cancelar()
@@ -76,8 +78,9 @@ loop hasta operación válida
         destroy ClienteActualizado
     else Error al validar datos
         System --> Admin: Mostrar_error("Error en los datos del cliente")
-    end
     deactivate System
+    end
+    
 end
 
 @enduml
