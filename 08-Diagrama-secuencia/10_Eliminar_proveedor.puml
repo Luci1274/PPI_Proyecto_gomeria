@@ -45,9 +45,10 @@ else Confirmación y sin dependencias
         Sistema --> Administrador: <<"Proveedor eliminado exitosamente">>
     else Error al eliminar
         Sistema --> Administrador: <<"Error al eliminar proveedor (BD)">>
+    deactivate Sistema
     end
 
-    deactivate Sistema
+    
 end
 
 @enduml
