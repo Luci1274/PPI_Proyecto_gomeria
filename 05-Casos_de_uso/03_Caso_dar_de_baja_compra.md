@@ -1,23 +1,26 @@
 # Caso de uso: Dar de baja compra
 # Actores: Administrador
-# Precondiciones: Debe existir un listado de compras en el sistema, y la compra a dar de baja no debe estar ya dada de baja.
+# Precondiciones:La compra debe existir en el sistema, La compra no debe encontrarse en estado Anulada..
 
 # Caminos Básico:
-1. El administrador selecciona la compra a dar de baja.
-2. El sistema muestra la confirmación para dar de baja la compra.
-3. El administrador ingresa el motivo.
-4. El sistema valida el motivo y da de baja la compra, actualizando el estado en el sistema.
+1. El Administrador selecciona la compra.
+2. El sistema verifica que la compra no esté anulada.
+3. El sistema solicita confirmación.
+4. El Administrador ingresa el motivo.
+5. El sistema valida el motivo.
+6. El sistema cambia el estado de la compra a Anulada.
+7. El sistema revierte el stock de los productos asociados.
 
 # Caminos Alternativos:
-1.A Compra ya dada de baja
-    1.A.1 El sistema muestra mensaje "La compra ya está dada de baja".
-    1.A.2 El administrador puede regresar al listado de compras.
+4.A Motivo inválido o vacío
+    4.A.1 El sistema muestra mensaje de error "El motivo no puede estar vacío".
+    4.A.2 El administrador ingresa un motivo válido.
 
-3.A Motivo inválido o vacío
-    3.A.1 El sistema muestra mensaje de error "El motivo no puede estar vacío".
-    3.A.2 El administrador ingresa un motivo válido.
+7.A El stock no puede ser revertido
+    7.A.1 El sistema muestra mensaje de error "No se pudo revertir el stock, contacte al soporte".
+    7.A.2 El administrador contacta al soporte para resolver el problema.
 
-# Postcondiciones: La compra queda registrada como dada de baja en el sistema con el motivo correspondiente.
+# Postcondiciones: La compra queda en estado Anulada, El stock de los productos es actualizado.
 # Escenarios de Éxito:
 1. La compra es dada de baja correctamente con un motivo válido.
 2. El sistema actualiza el estado de la compra y refleja el cambio en el listado.

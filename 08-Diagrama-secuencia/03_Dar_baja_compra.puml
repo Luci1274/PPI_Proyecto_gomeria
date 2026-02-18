@@ -1,59 +1,55 @@
-// ...existing code...
 @startuml dar_baja_compra
 
-title Diagrama de Secuencia: Dar de baja compra
+title Diagrama de Secuencia: Dar de Baja Compra
 
 actor Administrador
-participant Sistema
-participant "cat_comp:Catálogo_compra" as Cat_comp
-participant "multi:Multiobjeto" as MULT
+boundary "iu_darBajaCompra:IU_DarBajaCompra" as IU
+control "cu_darBajaCompra:CU_DarBajaCompra" as CU
+entity "cat_comp:CatalogoCompras" as CATC
+entity "compra:Compra" as C
+entity "cat_prod:CatalogoProductos" as CATP
 
-== Selección y verificación ==
-Administrador -> Sistema: Seleccionar_compra(ID_compra)
-activate Sistema
-Sistema -> Cat_comp: Obtener_estado_compra(ID_compra)
-activate Cat_comp
-Cat_comp --> Sistema: Estado_compra (activo / dada_de_baja)
-deactivate Cat_comp
+== Seleccionar Compra ==
+Administrador -> IU: seleccionarCompra(idCompra)
+activate IU
 
-opt Compra ya dada de baja
-    Sistema --> Administrador: <<"La compra ya está dada de baja">>
-    deactivate Sistema
+IU -> CU: solicitarBaja(idCompra)
+activate CU
+
+CU -> CATC: buscarCompra(idCompra)
+activate CATC
+CATC --> CU: compra
+deactivate CATC
+
+alt Compra ya anulada
+    CU --> IU: informarCompraAnulada()
+    IU --> Administrador: mostrarMensaje("La compra ya está dada de baja")
+else Compra válida
+
+    IU --> Administrador: solicitarMotivo()
+
+    Administrador -> IU: ingresarMotivo(motivo)
+    IU -> CU: validarMotivo(motivo)
+
+    alt Motivo inválido
+        CU --> IU: informarMotivoInvalido()
+        IU --> Administrador: mostrarMensaje("El motivo no puede estar vacío")
+    else Motivo válido
+
+        CU -> C: anular(motivo)
+
+        CU -> CATP: revertirStock(C.items)
+        activate CATP
+        CATP --> CU: stockActualizado
+        deactivate CATP
+
+        CU --> IU: bajaConfirmada()
+        IU --> Administrador: mostrarConfirmacion()
+
+    end reminder
 end
 
-== Confirmación de baja ==
-Sistema --> Administrador: Mostrar_confirmación_para_dar_de_baja
-Administrador -> Sistema: Confirmar_baja(motivo)
-activate Sistema
-
-' Validación del motivo (consulta al catálogo si aplica reglas)
-Sistema -> Cat_comp: Validar_motivo(motivo)
-activate Cat_comp
-Cat_comp --> Sistema: Validación OK / Motivo inválido
-deactivate Cat_comp
-
-opt Motivo inválido
-    Sistema --> Administrador: <<"El motivo no puede estar vacío o es inválido">>
-end
-
-== Persistencia de la baja ==
-Sistema -> MULT: Registrar_baja(ID_compra, motivo, usuario)
-activate MULT
-MULT --> Sistema: OK / Error_persistencia
-deactivate MULT
-
-alt Baja registrada OK
-    ' Opcional: actualizar índice/cache del catálogo para reflejar cambio en consultas
-    Sistema -> Cat_comp: Actualizar_estado_compra(ID_compra, dada_de_baja)
-    activate Cat_comp
-    Cat_comp --> Sistema: OK
-    deactivate Cat_comp
-    Sistema --> Administrador: <<"Compra dada de baja correctamente">>
-
-else Error de persistencia
-    Sistema --> Administrador: <<"Error al dar de baja la compra (BD)">>
-    deactivate Sistema
-end
+deactivate CU
+deactivate IU
 
 @enduml
-// ...existing code...

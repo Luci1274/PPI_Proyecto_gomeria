@@ -1,52 +1,52 @@
-// ...existing code...
 @startuml modificar_proveedor
 
 title Diagrama de Secuencia: Modificar Proveedor
 
 actor Administrador
-participant Sistema
-participant "cat_prov:Catálogo_prov" as Cat_prov
-participant "multi:Multiobjeto" as MULT
+boundary "iu_modProv:IU_ModificarProveedor" as IU
+control "cu_modProv:CU_ModificarProveedor" as CU
+entity "cat_prov:CatalogoProveedores" as CAT
+entity "prov:Proveedor" as P
 
-== Selección y carga de datos ==
-Administrador -> Sistema: Seleccionar_proveedor
-activate Sistema
-Sistema -> Cat_prov: Obtener_datos_proveedor
-activate Cat_prov
-Cat_prov --> Sistema: Datos_Proveedor(nombre, CUIT, teléfono, email)
-deactivate Cat_prov
-Sistema --> Administrador: Mostrar_formulario(Datos_Proveedor)
-deactivate Sistema
+== Solicitar modificación ==
+Administrador -> IU: seleccionarProveedor(idProv)
+activate IU
 
-== Envío de cambios ==
-Administrador -> Sistema: Enviar_modificaciones(Nuevos_datos)
-activate Sistema
+IU -> CU: solicitarModificacion(idProv)
+activate CU
 
-' Verificar concurrencia contra catálogo (consultas)
-Sistema -> Cat_prov: Verificar_version(CUIT)
-activate Cat_prov
-Cat_prov --> Sistema: version_actual
-deactivate Cat_prov
+CU -> CAT: buscarProveedor(idProv)
+activate CAT
+CAT --> CU: proveedor
+deactivate CAT
 
-alt Conflicto de concurrencia (version_actual != version_cliente)
-    Sistema --> Administrador: <<"Conflicto detectado: recargar / sobrescribir / cancelar">>
-else No hay conflicto
-    ' Validación mediante catálogo (consultas)
-    Sistema -> Cat_prov: Validar_cambios(cambios)
-    activate Cat_prov
-    Cat_prov --> Sistema: Validación OK / Errores
-    deactivate Cat_prov
+CU --> IU: datosProveedor(proveedor)
 
-    alt Errores de validación
-        Sistema --> Administrador: <<"Campos inválidos">>
-    end
+== Enviar cambios ==
+Administrador -> IU: ingresarCambios(datos)
+IU -> CU: modificarProveedor(datos)
+
+CU -> CU: validarDatos(datos)
+
+alt Datos inválidos
+    CU --> IU: informarError()
+    IU --> Administrador: mostrarMensaje("Campos inválidos")
+
+else Datos válidos
+
+    CU -> P: actualizarDatos(datos)
+
+    CU -> CAT: guardarProveedor(P)
+    activate CAT
+    CAT --> CU: proveedorActualizado
+    deactivate CAT
+
+    CU --> IU: modificacionExitosa()
+    IU --> Administrador: mostrarConfirmacion()
+
 end
-Sistema -> MULT: Guardar_cambios(proveedor_modificado)
-activate MULT
-MULT --> Sistema: OK
-deactivate MULT
-Sistema --> Administrador: <<"Cambios guardados exitosamente">>
-deactivate Sistema
+
+deactivate CU
+deactivate IU
 
 @enduml
-// ...existing code...

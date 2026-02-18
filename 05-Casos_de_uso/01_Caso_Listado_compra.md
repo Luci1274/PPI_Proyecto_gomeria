@@ -3,11 +3,11 @@
 # Precondiciones: ...
 
 # Caminos Básico:
-1. El administrador puede buscar y/o filtrar la lista por nombre del proveedor, estado de la compra, rango de fechas y navegar entre páginas.
-2. El sistema muestra la lista de compras según los criterios seleccionados.
-3. El administrador selecciona una compra para ver detalles o eliminar.
-4. El sistema abre la vista correspondiente (detalle/confirmación de dar de baja) o ejecuta la acción solicitada.
-5. El sistema actualiza la lista reflejando los cambios. 
+1. El Administrador ingresa criterios de búsqueda y/o filtrado.
+2. El sistema obtiene las compras según los criterios ingresados.
+3. El sistema muestra la lista paginada de compras.
+4. El Administrador selecciona una compra de la lista.
+5. El sistema muestra los detalles de la compra seleccionada.
 
 # Caminos Alternativos:
 1.A Búsqueda sin resultados

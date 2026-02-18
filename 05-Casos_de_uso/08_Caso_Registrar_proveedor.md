@@ -1,19 +1,18 @@
 # Caso de uso: Registrar proveedor
 # Actores: Administrador
-# Precondiciones: Caso de uso 05 Listado de proveedores
+# Precondiciones:
 # Caminos Básico:
 
-1. El administrador rellena los datos (nombre, CUIT, teléfono, email).
-2. El sistema valida los datos y los guarda.
-3. El sistema regresa al caso de uso 05
+1. El Administrador ingresa los datos del proveedor.
+2. El sistema valida los datos ingresados.
+3. El sistema registra el proveedor.
+
  
 # Caminos Alternativos:
 1.A Error al validar los datos ingresados.
     1.A.1 El sistema informa sobre datos inválidos. 
     1.A.2 Regresa al paso 1.
 
-1.B Formulario cerrado
-    1.B.1 El sistema regresa al caso de uso 05 sin guardar datos.
 
 # Postcondiciones: proveedor registrado correctamente y guardado en la base de datos 
 # Escenarios de Éxito:

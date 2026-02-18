@@ -1,43 +1,44 @@
-// ...existing code...
 @startuml listado_proveedores
 
-title Diagrama de Secuencia: Listado de Proveedores
+title Diagrama de Secuencia: Listar Proveedores
 
 actor Administrador
-participant Sistema
-participant "cat_prov:Catálogo_prov" as Cat_prov
-participant "multi:Multiobjeto" as MULT
+boundary "iu_listadoProv:IU_ListadoProveedores" as IU
+control "cu_listarProv:CU_ListarProveedores" as CU
+entity "cat_prov:CatalogoProveedores" as CAT
 
 == Solicitar listado ==
-Administrador -> Sistema: Solicitar_listado(filtros, página)
-activate Sistema
-Sistema -> Cat_prov: Obtener_lista(filtros, página)
-activate Cat_prov
-Cat_prov --> Sistema: ListaProveedores, total
-deactivate Cat_prov
-Sistema --> Administrador: Mostrar_lista(ListaProveedores, paginado)
-deactivate Sistema
+Administrador -> IU: ingresarFiltros(filtros, pagina)
+activate IU
 
-opt Búsqueda sin resultados
-    Administrador -> Sistema: Solicitar_listado(filtros_sin_coincidencias)
-    activate Sistema
-    Sistema -> Cat_prov: Obtener_lista(...)
-    activate Cat_prov
-    Cat_prov --> Sistema: Lista vacía, total=0
-    deactivate Cat_prov
-    Sistema --> Administrador: <<"No se encontraron proveedores">>
-    deactivate Sistema
+IU -> CU: solicitarListado(filtros, pagina)
+activate CU
+
+CU -> CAT: obtenerProveedores(filtros, pagina)
+activate CAT
+
+CAT --> CU: listaProveedores, total
+
+
+CU --> IU: resultadoListado(listaProveedores, total)
+
+
+IU --> Administrador: mostrarListado(listaProveedores, paginado)
+
+
+alt Búsqueda sin resultados
+    CAT --> CU: listaProveedores = vacia, total = 0
+    CU --> IU: resultadoVacio()
+    IU --> Administrador: mostrarMensaje("No se encontraron proveedores")
 end
 
-opt Error al cargar lista
-    Administrador -> Sistema: Solicitar_listado(...)
-    activate Sistema
-    Sistema -> Cat_prov: Obtener_lista(...)
-    activate Cat_prov
-    Cat_prov --> Sistema: Error (BD)
-    deactivate Cat_prov
-    Sistema --> Administrador: <<"Error al cargar la lista">>
-    deactivate Sistema
+alt Error al cargar lista
+    CAT --> CU: errorConsulta
+    deactivate CAT
+    CU --> IU: informarError()
+    deactivate CU
+    IU --> Administrador: mostrarMensaje("Error al cargar la lista")
+    deactivate IU
 end
 
 @enduml

@@ -1,51 +1,61 @@
-@startuml compra
+@startuml registrar_compra
 
 title Diagrama de Secuencia: Registrar Compra
 
 actor Administrador
-participant Sistema
-participant "cat_prov:Catálogo_prov" as Cat_prov
-participant "cat_fp:Catálogo_forma_pago" as Cat_fp
-participant "multi:Multiobjeto" as MULT
+boundary "iu_registrarCompra:IU_RegistrarCompra" as IU
+control "cu_registrarCompra:CU_RegistrarCompra" as CU
+entity "cat_prov:CatalogoProveedores" as CP
+entity "compra:Compra" as C
+entity "item:ItemCompra" as IC
+entity "cat_prod:CatalogoProductos" as PROD
 
-== Registro de Proveedor ==
-loop hasta datos correctos
-    Administrador -> Sistema: Ingresar_dato_proveedor(nombre)
-    activate Sistema
-    Sistema -> Cat_prov: Buscar_proveedor(CUIT)
-    activate Cat_prov
-    Cat_prov --> Sistema: Proveedor_encontrado | null
-    deactivate Cat_prov
+== Crear Compra ==
+Administrador -> IU: ingresarDatosCompra(proveedor, formaPago)
+activate IU
 
-    alt Proveedor no encontrado
-        Sistema --> Administrador: <<"Datos incorrectos">>
-        deactivate Sistema
-    end    
+IU -> CU: crearCompra(proveedor, formaPago)
+activate CU
+
+CU -> CP: buscarProveedor(idProv)
+activate CP
+CP --> CU: proveedor
+deactivate CP
+
+create C
+CU -> C: inicializar(proveedor, formaPago, estado=Pendiente)
+
+== Registrar Ítems ==
+loop por cada ítem
+    Administrador -> IU: ingresarItem(prod,cant,precio)
+    IU -> CU: agregarItem(prod,cant,precio)
+
+    CU -> PROD: buscarProducto(prod)
+    activate PROD
+    PROD --> CU: producto
+    deactivate PROD
+
+    create IC
+    CU -> IC: inicializar(producto,cantidad,precio)
+
+    CU -> C: agregarItem(IC)
 end
 
-== Registro de Forma de Pago ==
-loop hasta seleccion valid
-Administrador -> Sistema:Seleccionar_forma_de_pago(Efectivo | Tarjeta | Transferencia)
-activate Sistema
-Sistema -> Cat_fp: Validar_forma_pago()
-activate Cat_fp
-Cat_fp --> Sistema: Resultado_validación
-deactivate Cat_fp
+== Confirmar Compra ==
+Administrador -> IU: confirmarCompra()
+IU -> CU: confirmarCompra()
 
-opt Forma de pago inválida
-    Sistema --> Administrador: <<"Datos incorrectos">>
-    deactivate Sistema
-end
+CU -> C: confirmar()
 
+CU -> PROD: actualizarStock(items)
+activate PROD
+PROD --> CU: stockActualizado
+deactivate PROD
 
-== creación Ítem de Compra ==
-loop tantas veces como se desee
-    create "item_compra:Item_compra" as IC
-    Administrador -> IC: Crear_item_compra(nombre, tipo, marca, cantidad, precio unitario)
-    activate IC
-    activate Sistema
-    Sistema -> MULT: Guardar_item_compra()
-    Sistema --> Administrador: NULL
-    deactivate Sistema
-    deactivate IC
+CU --> IU: compraRegistrada()
+IU --> Administrador: mostrarConfirmacion()
+
+deactivate CU
+deactivate IU
+
 @enduml

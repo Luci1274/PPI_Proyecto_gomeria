@@ -1,56 +1,41 @@
-@startuml proveedor
+@startuml registrar_proveedor
 
 title Diagrama de Secuencia: Registrar Proveedor
 
 actor Administrador
-participant Sistema
-participant "cat_prov:Catálogo_prov" as Cat_prov
-participant "multi:Multiobjeto" as MULT
+boundary "iu_registrarProv:IU_RegistrarProveedor" as IU
+control "cu_registrarProv:CU_RegistrarProveedor" as CU
+entity "proveedor:Proveedor" as P
+entity "cat_prov:CatalogoProveedores" as CAT
 
-== Registro de nuevo proveedor ==
+== Ingreso de Datos ==
+Administrador -> IU: ingresarDatos(nombre,CUIT,telefono,email)
+activate IU
 
-loop hasta datos válidos
-    Administrador -> Sistema: Ingresar_datos_proveedor(nombre, CUIT, teléfono, email)
-    activate Sistema
-    Sistema -> Cat_prov: Validar_datos(CUIT, email, teléfono)
-    activate Cat_prov
-    Cat_prov --> Sistema: Resultado_validación
-    deactivate Cat_prov
-    opt Datos inválidos
-        Sistema --> Administrador: <<"Datos inválidos">>
-    end
-    create "proveedor:Proveedor" as P
-    Sistema -> P: Inicializar(nombre, CUIT, teléfono, email)
-    activate P
-    Sistema -> MULT: Guardar_proveedor(proveedor)
-    activate MULT
-    MULT --> Sistema: OK
-    deactivate MULT
-    Sistema --> Administrador: <<"Proveedor registrado exitosamente">>
-    deactivate Sistema
-    deactivate P
+IU -> CU: registrarProveedor(datos)
+activate CU
+
+CU -> CU: validarDatos(datos)
+
+alt Datos inválidos
+    CU --> IU: informarError()
+    IU --> Administrador: mostrarMensaje("Datos inválidos")
+else Datos válidos
+
+    create P
+    CU -> P: inicializar(nombre,CUIT,telefono,email)
+
+    CU -> CAT: guardarProveedor(P)
+    activate CAT
+    CAT --> CU: proveedorGuardado
+    deactivate CAT
+
+    CU --> IU: registroExitoso()
+    IU --> Administrador: mostrarConfirmacion()
+
 end
 
-== Modificación o eliminación ==
-opt Modificar o eliminar proveedor
-    Administrador -> Sistema: Seleccionar proveedor y modificar/eliminar
-    activate Sistema
-    Sistema -> Cat_prov: Obtener_datos_proveedor(CUIT)
-    activate Cat_prov
-    Cat_prov --> Sistema: Datos actuales
-    deactivate Cat_prov
-    Sistema -> MULT: Validar_cambios()
-    activate MULT
-    alt Cambios válidos
-        Sistema -> MULT: Guardar_cambios()
-        MULT --> Sistema: OK
-        Sistema --> Administrador: <<"Cambios guardados exitosamente">>
-    else Error de validación
-        MULT --> Sistema: Error
-        Sistema --> Administrador: <<"Error al guardar cambios">>
-        deactivate MULT
-        deactivate Sistema    
-    end
-end
+deactivate CU
+deactivate IU
 
 @enduml
