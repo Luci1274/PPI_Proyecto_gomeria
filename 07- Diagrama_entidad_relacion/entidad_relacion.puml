@@ -14,7 +14,8 @@ entity "Venta" as VENTA {
 
 entity "Item Venta" as ITEM_VENTA {
   item_venta_id : INTEGER <<key>>
-  nombre_producto : STRING
+  codigo_producto : STRING
+  precio_unitario : FLOAT
   cantidad : INTEGER
 }
 
@@ -29,7 +30,8 @@ entity "Compra" as COMPRA {
 
 entity "Item Compra" as ITEM_COMPRA {
   item_compra_id : INTEGER <<key>>
-  nombre_producto : STRING
+  codigo_producto : STRING
+  precio_unitario : FLOAT
   cantidad : INTEGER
 }
 
@@ -42,20 +44,22 @@ entity "Producto" as PRODUCTO {
 }
 
 entity "Stock" as STOCK {
-  codigo_producto : INTEGER <<key>>
+  codigo_producto : STRING <<key>>
   cantidad : INTEGER
   porcentaje_venta : FLOAT
 }
 
 entity "Historial Precio" as HIST_PRECIO {
-  codigo_producto : STRING <<key>>
+  hist_precio_id : INTEGER <<key>>
+  codigo_producto : STRING
   precio_unitario : FLOAT
   fecha_inicio_vigencia : DATE
   fecha_fin_vigencia : DATE
 }
 
 entity "Historial Movimiento" as HIST_MOV {
-  codigo_producto : STRING <<key>>
+  movimiento_id : INTEGER <<key>>
+  codigo_producto : STRING
   tipo_movimiento : STRING   
   referencia_tipo : STRING
   referencia_id : INTEGER
