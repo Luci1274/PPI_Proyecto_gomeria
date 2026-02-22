@@ -28,7 +28,11 @@
 4. Visualizar listado de clientes antiguos.
 
 ## Proveedor
-1. Visualizar listado de productos de un proveedor.
+1. Registrar proveedor.
+2. Modificar proveedor.
+3. Eliminar proveedor.
+4. Visualizar listado de proveedores.
+5. Visualizar listado de productos de un proveedor.
 
 ## Productos
 1. Registrar productos.

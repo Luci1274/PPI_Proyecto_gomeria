@@ -41,6 +41,16 @@ loop por cada ítem
     CU -> C: agregarItem(IC)
 end
 
+opt Eliminar ítem de compra
+    Administrador -> IU: eliminarItem(item)
+    IU -> CU: eliminarItem(item)
+
+    CU -> C: quitarItem(item)
+
+    CU --> IU: itemEliminado()
+    IU --> Administrador: actualizarListadoItems()
+end
+
 == Confirmar Compra ==
 Administrador -> IU: confirmarCompra()
 IU -> CU: confirmarCompra()

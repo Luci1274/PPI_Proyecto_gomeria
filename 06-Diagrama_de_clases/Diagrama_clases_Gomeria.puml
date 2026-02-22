@@ -1,0 +1,126 @@
+@startuml Gomeria_Modelo_Dominio
+
+title Diagrama_clases_Gomeria
+
+class Persona {
+    - id: Int
+    - nombre: String
+    - cuit: String
+    - direccion: String
+    - telefono: String
+    - email: String
+    - creadoEn: Date
+    - actualizadoEn: Date
+
+    + getNombre(): String
+    + getCUIT(): String
+    + getTelefono(): String
+    + getEmail(): String
+}
+
+class Cliente_antiguo {
+    - creditoMaximo: Float
+    - deudaActual: Float
+    - notas: String
+
+    + getSaldo(): Float
+}
+
+class Proveedor {
+    - activo: Boolean
+    + estaActivo(): Boolean
+}
+
+class Producto {
+    - sku: String
+    - nombre: String
+    - descripcion: String
+    - tipo: String
+    - marca: String
+    - unidadMedida: String
+
+    + getNombre(): String
+}
+
+class Stock {
+    - cantidadDisponible: Int
+    - stockMinimo: Int
+
+    + getCantidadDisponible(): Int
+}
+
+class Item {
+    - cantidad: Int
+    - precioUnitario: Float
+    - descuento: Float
+
+    + calcularSubtotal(): Float
+}
+
+class Transaccion {
+    - numero: String
+    - fecha: Date
+    - estado: String
+    - formaPago: String
+    - motivoBaja: String
+    - usuarioBaja: String
+    - fechaBaja: Date
+    - items: List<Item>
+
+    + agregarItem(producto: Producto, cantidad: Int)
+    + cancelarItem(item: Item)
+    + calcularTotal(): Float
+    + estaConfirmada(): Boolean
+    + puedeModificarItems(): Boolean
+    + confirmar()
+    + generarMovimientosStock()
+    + cancelar(motivo: String, usuario: String)
+}
+
+class Compra {
+    - numeroFactura: String
+    - fechaRecepcion: Date
+}
+
+class Venta {
+    - numeroComprobante: String
+    - fechaEntrega: Date
+}
+
+class MovimientoStock {
+    - cantidad: Int
+    - tipo: String
+    - fecha: Date
+
+    + aplicar()
+}
+
+class ProductoProveedor {
+    - precioCosto: Float
+}
+
+' HERENCIAS
+Persona <|-- Cliente_antiguo
+Persona <|-- Proveedor
+Transaccion <|-- Compra
+Transaccion <|-- Venta
+
+' TRANSACCIONES
+Transaccion "1" *-- "1..*" Item
+Item "1" --> "1" Producto
+
+' TERCEROS
+Compra "1" --> "1" Proveedor
+Venta "1" --> "1" Cliente_antiguo
+
+' STOCK
+Producto "1" --> "1" Stock
+Transaccion "1" --> "0..*" MovimientoStock : genera
+MovimientoStock "1" --> "1" Producto : afecta
+MovimientoStock --> Stock : impacta
+
+' PRODUCTO - PROVEEDOR
+Producto "1" -- "0..*" ProductoProveedor
+Proveedor "1" -- "0..*" ProductoProveedor
+
+@enduml
