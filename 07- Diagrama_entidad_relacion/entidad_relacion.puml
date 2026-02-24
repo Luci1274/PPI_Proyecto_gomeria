@@ -43,7 +43,7 @@ entity "Producto" as PRODUCTO {
   medida : STRING
 }
 
-entity "Stock" as STOCK {
+entity "Stock actual" as STOCK {
   codigo_producto : STRING <<key>>
   cantidad : INTEGER
   porcentaje_venta : FLOAT
@@ -76,7 +76,7 @@ entity "Cliente" as CLIENTE {
   forma_de_contacto : STRING
 }
 
-entity "Pago" as PAGO {
+entity "Historial pago" as PAGO {
   codigo_pago : STRING <<key>>
   comprobante_num : INT 
   fecha : DATE
@@ -92,28 +92,34 @@ entity "Proveedor" as PROVEEDOR {
 }
 
 ' === RELACIONES (diamantes) ===
-relationship "Contiene Venta" as CONTIENE_VENTA {
+relationship "Contiene" as CONTIENE_VENTA {
 }
 
-relationship "Contiene Compra" as CONTIENE_COMPRA {
+relationship "Contiene" as CONTIENE_COMPRA {
 }
 
-relationship "Tiene Stock" as TIENE_STOCK { 
+relationship "Tiene " as TIENE_STOCK { 
 }
 
-relationship "Tiene Historial Precio" as TIENE_HISTPRECIO {
+relationship "Tiene" as TIENE_HISTPRECIO {
 }
 
-relationship "Tiene Movimiento" as TIENE_MOV {
+relationship "Tiene" as TIENE_MOV {
 }
 
 relationship "Realiza" as REALIZA {
 }
 
-relationship "Efectua Pago" as EFECTUA_PAGO {
+relationship "Posee" as POSEE_HISTORIAL {
 }
 
-relationship "Suministra" as SUMINISTRA { 
+relationship "Provee" as PROVEE { 
+}
+
+relationship "Corresponde a" as CONTIENE_PRODUCTO {
+}
+
+relationship "Corresponde a" as POSEE_PRODUCTO {
 }
 
 ' === ENLACES / CARDINALIDADES (uso ALIASES en enlaces) ===
@@ -143,15 +149,18 @@ CLIENTE -1- REALIZA
 REALIZA -N- VENTA
 
 ' Cliente - Pago (historial de pagos: 1 Cliente efectúa N Pagos)
-CLIENTE -1- EFECTUA_PAGO
-EFECTUA_PAGO -N- PAGO
+CLIENTE -1- POSEE_HISTORIAL
+POSEE_HISTORIAL -N- PAGO
 
 ' Proveedor - Compra (1 Proveedor suministra N Compras)
-PROVEEDOR -1- SUMINISTRA
-SUMINISTRA -N- COMPRA
+PROVEEDOR -1- PROVEE
+PROVEE -N- COMPRA
 
 ' Opcional: relacionar Item Venta/Compra con Producto (referencia al producto vendido/comprado)
-ITEM_VENTA -- PRODUCTO
-ITEM_COMPRA -- PRODUCTO
+ITEM_VENTA -N- CONTIENE_PRODUCTO
+CONTIENE_PRODUCTO -1- PRODUCTO
+
+ITEM_COMPRA -N- POSEE_PRODUCTO
+POSEE_PRODUCTO -1- PRODUCTO
 
 @endchen
